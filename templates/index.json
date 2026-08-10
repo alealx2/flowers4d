@@ -115,16 +115,23 @@
               "blocks": {}
             },
             "button_EczNWn": {
-              "type": "button",
+              "type": "dual-buttons",
               "settings": {
-                "label": "Catálogo completo",
-                "link": "shopify://collections/all",
-                "open_in_new_tab": false,
-                "style_class": "button",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
+                "button_1_label": "Ver Flowers 4D",
+                "button_1_link": "shopify://collections/flowers-4d",
+                "button_1_new_tab": false,
+                "use_button_1_bg": true,
+                "button_1_bg": "#2F4A3F",
+                "use_button_1_text": true,
+                "button_1_text": "#FFFFFF",
+                "button_2_label": "Ver Tablas 4D",
+                "button_2_link": "shopify://collections/tablas-4d",
+                "button_2_new_tab": false,
+                "use_button_2_bg": true,
+                "button_2_bg": "#B88CA0",
+                "use_button_2_text": true,
+                "button_2_text": "#FFFFFF",
+                "gap": 12
               },
               "blocks": {}
             }
