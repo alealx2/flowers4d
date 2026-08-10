@@ -547,7 +547,7 @@
               "type": "icon",
               "settings": {
                 "icon": "eye",
-                "image_upload": "shopify://shop_images/icono_1.png",
+                "image_upload": "shopify://shop_images/icono_1-removebg-preview.png",
                 "width": 80,
                 "link": "",
                 "open_in_new_tab": false
@@ -698,7 +698,7 @@
               "type": "icon",
               "settings": {
                 "icon": "eye",
-                "image_upload": "shopify://shop_images/icono_2.png",
+                "image_upload": "shopify://shop_images/icono_2-removebg-preview.png",
                 "width": 80,
                 "link": "",
                 "open_in_new_tab": false
@@ -849,7 +849,7 @@
               "type": "icon",
               "settings": {
                 "icon": "eye",
-                "image_upload": "shopify://shop_images/icono_3.png",
+                "image_upload": "shopify://shop_images/icono_3-removebg-preview.png",
                 "width": 80,
                 "link": "",
                 "open_in_new_tab": false
@@ -1000,7 +1000,7 @@
               "type": "icon",
               "settings": {
                 "icon": "eye",
-                "image_upload": "shopify://shop_images/icono_4.png",
+                "image_upload": "shopify://shop_images/icono_4-removebg-preview.png",
                 "width": 80,
                 "link": "",
                 "open_in_new_tab": false
