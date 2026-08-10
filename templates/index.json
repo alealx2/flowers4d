@@ -496,7 +496,7 @@
         "icons_shape": "circle",
         "section_width": "full-width",
         "gap": 12,
-        "color_scheme": "",
+        "color_scheme": "scheme-a17caea0-61b4-43cb-86e0-1f4e99df42d2",
         "padding-block-start": 0,
         "padding-block-end": 0
       }
@@ -547,7 +547,7 @@
               "type": "icon",
               "settings": {
                 "icon": "eye",
-                "image_upload": "shopify://shop_images/icono_1.png",
+                "image_upload": "shopify://shop_images/icono_1-removebg-preview.png",
                 "width": 80,
                 "link": "",
                 "open_in_new_tab": false
@@ -698,7 +698,7 @@
               "type": "icon",
               "settings": {
                 "icon": "eye",
-                "image_upload": "shopify://shop_images/icono_2.png",
+                "image_upload": "shopify://shop_images/icono_2-removebg-preview.png",
                 "width": 80,
                 "link": "",
                 "open_in_new_tab": false
@@ -849,7 +849,7 @@
               "type": "icon",
               "settings": {
                 "icon": "eye",
-                "image_upload": "shopify://shop_images/icono_3.png",
+                "image_upload": "shopify://shop_images/icono_3-removebg-preview.png",
                 "width": 80,
                 "link": "",
                 "open_in_new_tab": false
@@ -1000,7 +1000,7 @@
               "type": "icon",
               "settings": {
                 "icon": "eye",
-                "image_upload": "shopify://shop_images/icono_4.png",
+                "image_upload": "shopify://shop_images/icono_4-removebg-preview.png",
                 "width": 80,
                 "link": "",
                 "open_in_new_tab": false
@@ -1353,7 +1353,7 @@
                   "type": "image",
                   "name": "t:names.image",
                   "settings": {
-                    "image": "shopify://shop_images/FLOWERS4DCLGIRAS12.jpg",
+                    "image": "shopify://shop_images/FLOWERS4DCLESPEJOGIRA.jpg",
                     "link": "",
                     "image_ratio": "square",
                     "width": "fill",
