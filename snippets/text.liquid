@@ -40,6 +40,9 @@
         echo ' custom-color '
       endif
     endif
+    if block_settings.use_custom_color and block_settings.custom_color != blank
+      echo ' text-block--custom-color '
+    endif
     if block_settings.background
       echo ' text-block--background '
     endif
@@ -61,6 +64,9 @@
     --max-width: var(--max-width--{{ type }}-{{ block_settings.max_width }});
     {% if text_width == "100%" %}
       --text-align: {{ block_settings.alignment }};
+    {% endif %}
+    {% if block_settings.use_custom_color and block_settings.custom_color != blank %}
+      --custom-text-color: {{ block_settings.custom_color }};
     {% endif %}
     {% if block_settings.background %}
       --text-background-color: {{ block_settings.background_color | default: 'rgb(255 255 255 / 1.0)' }};
@@ -216,5 +222,11 @@
   .custom-color,
   .custom-color > :is(h1, h2, h3, h4, h5, h6, p, *) {
     color: var(--color);
+  }
+
+  .text-block--custom-color,
+  .text-block--custom-color > *,
+  .text-block--custom-color :is(h1, h2, h3, h4, h5, h6, p, a, span, strong, em) {
+    color: var(--custom-text-color) !important;
   }
 {% endstylesheet %}

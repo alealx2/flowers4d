@@ -43,8 +43,20 @@
     assign image_sizes = sizes_attribute | strip
   endif
 
+  # Allow product sections to enforce one consistent image format across every card.
+  # If the section does not provide an override, keep the individual card-gallery setting.
+  assign effective_image_ratio = block_settings.image_ratio | default: 'square'
+  if section.settings.product_card_image_ratio != blank and section.settings.product_card_image_ratio != 'card'
+    assign effective_image_ratio = section.settings.product_card_image_ratio
+  endif
+
+  assign media_fit = block_settings.media_fit | default: 'cover'
+  if section.settings.product_card_media_fit != blank
+    assign media_fit = section.settings.product_card_media_fit
+  endif
+
   assign ratio = '1'
-  case block_settings.image_ratio
+  case effective_image_ratio
     when 'landscape'
       assign ratio = '16 / 9'
     when 'portrait'
@@ -55,10 +67,9 @@
       assign ratio = product.featured_media.preview_image.aspect_ratio | default: '1'
   endcase
 
-  if block_settings.image_ratio == 'adapt' and block_settings.constrain_to_viewport
+  if effective_image_ratio == 'adapt' and block_settings.constrain_to_viewport
     if block_settings.constrain_to_viewport != ''
       assign constrain_to_viewport = true
-      assign media_fit = block_settings.constrain_to_viewport
     endif
   endif
 %}
@@ -79,7 +90,7 @@
   {% if settings.transition_to_main_product %}
     data-view-transition-to-main-product
   {% endif %}
-  data-image-ratio="{{ block_settings.image_ratio }}"
+  data-image-ratio="{{ effective_image_ratio }}"
   {{ block.shopify_attributes }}
 >
   {%- if product.media.size > 0 -%}
@@ -173,28 +184,29 @@
       %}
     </a>
   {% elsif product != blank and product.media.size == 0 %}
-    <product-title class="product-card-gallery__title-placeholder">
-      <a
-        class="contents"
-        ref="productTitleLink"
-        href="{{ product.selected_or_first_available_variant.url }}"
-        aria-hidden="true"
-      >
-        <span class="title-text">{{- product.title -}}</span>
-      </a>
-    </product-title>
+    {% liquid
+      capture placeholder_image
+        echo 'product-1' | placeholder_svg_tag
+      endcapture
+      capture placeholder_slide
+        render 'slideshow-slide', index: 0, children: placeholder_image, class: 'product-media-container media-fit card-gallery__placeholder', media_fit: media_fit
+      endcapture
+    %}
+    <a
+      class="contents"
+      ref="cardGalleryLink"
+      href="{{ product.selected_or_first_available_variant.url }}"
+      aria-label="{{- product.title -}}"
+    >
+      {% render 'slideshow', ref: 'slideshow', slides: placeholder_slide, slide_count: 1, attributes: 'disabled="true"' %}
+    </a>
   {% elsif product == blank %}
     {% liquid
       capture placeholder_image
-        # Extract index from block ID (e.g., "product-card-3" -> "3")
-        assign block_parts = block.id | split: '-'
-        assign placeholder_index = block_parts.last | default: 0
-        assign variant = placeholder_index | modulo: 3 | plus: 1
-        assign placeholder_name = 'product-apparel-' | append: variant
-        echo placeholder_name | placeholder_svg_tag
+        echo 'product-1' | placeholder_svg_tag
       endcapture
       capture placeholder_slide
-        render 'slideshow-slide', index: 1, children: placeholder_image, class: 'product-media-container card-gallery__placeholder'
+        render 'slideshow-slide', index: 0, children: placeholder_image, class: 'product-media-container media-fit card-gallery__placeholder', media_fit: media_fit
       endcapture
       render 'slideshow', ref: 'slideshow', slides: placeholder_slide, slide_count: 1, attributes: 'disabled="true"'
     %}
@@ -212,6 +224,33 @@
   .card-gallery__placeholder svg {
     height: 100%;
     width: 100%;
+  }
+
+  /* APPLI: keep all product cards visually consistent regardless of source image dimensions. */
+  .card-gallery slideshow-component,
+  .card-gallery slideshow-container,
+  .card-gallery slideshow-slides,
+  .card-gallery slideshow-slide.product-media-container,
+  .card-gallery .product-media {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .card-gallery slideshow-slide.product-media-container,
+  .card-gallery .product-media {
+    aspect-ratio: var(--gallery-aspect-ratio, 1);
+  }
+
+  .card-gallery .product-media__image,
+  .card-gallery__placeholder svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .card-gallery__placeholder svg {
+    object-fit: contain;
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-5));
   }
 
   .card-gallery svg {
