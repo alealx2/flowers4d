@@ -1,0 +1,410 @@
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{% liquid
+  assign selected_variant = product.selected_or_first_available_variant
+  assign section_class = 'custom-pdp-4d--' | append: section.id
+%}
+
+<section
+  class="custom-pdp-4d {{ section_class }} color-{{ section.settings.color_scheme }}"
+  style="
+    --pdp-gap: {{ section.settings.gap }}px;
+    --pdp-media-width: {{ section.settings.media_width }}%;
+    --pdp-radius: {{ section.settings.corner_radius }}px;
+    --pdp-border-color: {{ section.settings.border_color }};
+    --pdp-accent: {{ section.settings.accent_color }};
+    --pdp-button-bg: {{ section.settings.button_background }};
+    --pdp-button-text: {{ section.settings.button_text_color }};
+    --pdp-soft-bg: {{ section.settings.soft_background }};
+    --pdp-soft-text: {{ section.settings.soft_text_color }};
+    --pdp-padding-top: {{ section.settings.padding_block_start }}px;
+    --pdp-padding-bottom: {{ section.settings.padding_block_end }}px;
+  "
+>
+  <div class="custom-pdp-4d__inner{% if section.settings.content_width == 'full' %} custom-pdp-4d__inner--full{% endif %}">
+    <div class="custom-pdp-4d__main{% if section.settings.media_position == 'right' %} custom-pdp-4d__main--media-right{% endif %}">
+      <div class="custom-pdp-4d__gallery">
+        {% content_for 'block',
+          type: '_product-media-gallery',
+          id: 'media-gallery',
+          closest.product: product
+        %}
+      </div>
+
+      <div class="custom-pdp-4d__details">
+        {% if section.settings.eyebrow != blank %}
+          <div class="custom-pdp-4d__eyebrow">{{ section.settings.eyebrow }}</div>
+        {% endif %}
+
+        <h1 class="custom-pdp-4d__title">{{ product.title }}</h1>
+
+        {% if section.settings.show_reviews_placeholder %}
+          <div class="custom-pdp-4d__reviews" aria-label="Valoración del producto">
+            <span class="custom-pdp-4d__stars" aria-hidden="true">★★★★★</span>
+            <span>{{ section.settings.reviews_text }}</span>
+          </div>
+        {% endif %}
+
+        <div class="custom-pdp-4d__price">
+          {% content_for 'block',
+            type: 'price',
+            id: 'price',
+            closest.product: product
+          %}
+        </div>
+
+        {% if section.settings.show_divider %}
+          <div class="custom-pdp-4d__divider"></div>
+        {% endif %}
+
+        {% if section.settings.show_short_description %}
+          <div class="custom-pdp-4d__short-description rte">
+            {% if section.settings.short_description != blank %}
+              {{ section.settings.short_description }}
+            {% else %}
+              {{ product.description | strip_html | truncatewords: section.settings.description_words }}
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_info_cards %}
+          <div class="custom-pdp-4d__info-cards">
+            {% for i in (1..3) %}
+              {% liquid
+                assign show_key = 'info_' | append: i | append: '_show'
+                assign icon_key = 'info_' | append: i | append: '_icon'
+                assign heading_key = 'info_' | append: i | append: '_heading'
+                assign text_key = 'info_' | append: i | append: '_text'
+                assign info_show = section.settings[show_key]
+                assign info_icon = section.settings[icon_key]
+                assign info_heading = section.settings[heading_key]
+                assign info_text = section.settings[text_key]
+              %}
+              {% if info_show %}
+                <div class="custom-pdp-4d__info-card">
+                  <span class="custom-pdp-4d__icon" aria-hidden="true">
+                    {% case info_icon %}
+                      {% when 'people' %}
+                        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                      {% when 'ruler' %}
+                        <svg viewBox="0 0 24 24"><path d="m16 2 6 6L8 22l-6-6L16 2Z"/><path d="m14 4 2 2M11 7l2 2M8 10l2 2M5 13l2 2"/></svg>
+                      {% when 'leaf' %}
+                        <svg viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5.2 18 2 18 2s2.5 7.5-2 12c-1.6 1.6-3.2 2.3-5 2.4"/><path d="M2 21c0-3 1.85-5.36 5.08-6.94C9.12 13.06 12 12 16 12"/></svg>
+                      {% when 'gift' %}
+                        <svg viewBox="0 0 24 24"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 1 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 1 0 0-5C13 2 12 7 12 7Z"/></svg>
+                      {% else %}
+                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+                    {% endcase %}
+                  </span>
+                  <strong>{{ info_heading }}</strong>
+                  <span>{{ info_text }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="custom-pdp-4d__variant-picker">
+          {% content_for 'block',
+            type: 'variant-picker',
+            id: 'variant-picker',
+            closest.product: product
+          %}
+        </div>
+
+        <div class="custom-pdp-4d__buy-buttons{% unless section.settings.show_dynamic_checkout %} custom-pdp-4d__buy-buttons--hide-dynamic{% endunless %}">
+          {% content_for 'block',
+            type: 'buy-buttons',
+            id: 'buy-buttons',
+            closest.product: product
+          %}
+        </div>
+
+        {% if section.settings.delivery_text != blank %}
+          <div class="custom-pdp-4d__delivery">
+            <span class="custom-pdp-4d__delivery-icon">
+              <svg viewBox="0 0 24 24"><path d="M10 17h4V5H2v12h3M14 8h4l4 4v5h-3M7.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM16.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
+            </span>
+            <span>{{ section.settings.delivery_text }}</span>
+          </div>
+        {% endif %}
+
+        <div class="custom-pdp-4d__accordions">
+          {% for i in (1..3) %}
+            {% liquid
+              assign show_key = 'accordion_' | append: i | append: '_show'
+              assign icon_key = 'accordion_' | append: i | append: '_icon'
+              assign heading_key = 'accordion_' | append: i | append: '_heading'
+              assign content_key = 'accordion_' | append: i | append: '_content'
+              assign open_key = 'accordion_' | append: i | append: '_open'
+              assign accordion_show = section.settings[show_key]
+              assign accordion_icon = section.settings[icon_key]
+              assign accordion_heading = section.settings[heading_key]
+              assign accordion_content = section.settings[content_key]
+              assign accordion_open = section.settings[open_key]
+            %}
+            {% if accordion_show %}
+              <details class="custom-pdp-4d__accordion" {% if accordion_open %}open{% endif %}>
+                <summary>
+                  <span class="custom-pdp-4d__accordion-icon" aria-hidden="true">
+                    {% case accordion_icon %}
+                      {% when 'heart' %}<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+                      {% when 'truck' %}<svg viewBox="0 0 24 24"><path d="M10 17h4V5H2v12h3M14 8h4l4 4v5h-3M7.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM16.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
+                      {% when 'leaf' %}<svg viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5.2 18 2 18 2s2.5 7.5-2 12c-1.6 1.6-3.2 2.3-5 2.4"/><path d="M2 21c0-3 1.85-5.36 5.08-6.94C9.12 13.06 12 12 16 12"/></svg>
+                      {% else %}<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+                    {% endcase %}
+                  </span>
+                  <span>{{ accordion_heading }}</span>
+                  <span class="custom-pdp-4d__chevron">⌄</span>
+                </summary>
+                {% if accordion_content != blank %}
+                  <div class="custom-pdp-4d__accordion-content rte">{{ accordion_content }}</div>
+                {% endif %}
+              </details>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% content_for 'blocks' %}
+      </div>
+    </div>
+
+    {% if section.settings.show_benefits_strip %}
+      <div class="custom-pdp-4d__benefits color-{{ section.settings.benefits_color_scheme }}">
+        {% for i in (1..4) %}
+          {% liquid
+            assign show_key = 'benefit_' | append: i | append: '_show'
+            assign icon_key = 'benefit_' | append: i | append: '_icon'
+            assign heading_key = 'benefit_' | append: i | append: '_heading'
+            assign text_key = 'benefit_' | append: i | append: '_text'
+            assign benefit_show = section.settings[show_key]
+            assign benefit_icon = section.settings[icon_key]
+            assign benefit_heading = section.settings[heading_key]
+            assign benefit_text = section.settings[text_key]
+          %}
+          {% if benefit_show %}
+            <div class="custom-pdp-4d__benefit">
+              <span class="custom-pdp-4d__benefit-icon">
+                {% case benefit_icon %}
+                  {% when 'calendar' %}<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/><circle cx="8" cy="15" r="1"/><circle cx="12" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg>
+                  {% when 'hand' %}<svg viewBox="0 0 24 24"><path d="M4 13h4l3-5 2 1-1 4h5a3 3 0 0 1 0 6H9l-5-2v-4Z"/><path d="M15 8c0-2 2-3 3-1 1-2 3-1 3 1 0 2-3 4-3 4s-3-2-3-4Z"/></svg>
+                  {% when 'shield' %}<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+                  {% else %}<svg viewBox="0 0 24 24"><path d="M10 17h4V5H2v12h3M14 8h4l4 4v5h-3M7.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM16.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
+                {% endcase %}
+              </span>
+              <div><strong>{{ benefit_heading }}</strong><span>{{ benefit_text }}</span></div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_tabs %}
+      <div class="custom-pdp-4d__tabs color-{{ section.settings.tabs_color_scheme }}">
+        <div class="custom-pdp-4d__tab-nav" role="tablist">
+          <button type="button" class="is-active" data-pdp-tab="description-{{ section.id }}">{{ section.settings.description_label }}</button>
+          {% if section.settings.includes_content != blank %}<button type="button" data-pdp-tab="includes-{{ section.id }}">{{ section.settings.includes_label }}</button>{% endif %}
+          {% if section.settings.shipping_content != blank %}<button type="button" data-pdp-tab="shipping-{{ section.id }}">{{ section.settings.shipping_label }}</button>{% endif %}
+        </div>
+        <div class="custom-pdp-4d__tab-panels">
+          <div class="custom-pdp-4d__tab-panel is-active rte" id="description-{{ section.id }}">{{ product.description }}</div>
+          {% if section.settings.includes_content != blank %}<div class="custom-pdp-4d__tab-panel rte" id="includes-{{ section.id }}">{{ section.settings.includes_content }}</div>{% endif %}
+          {% if section.settings.shipping_content != blank %}<div class="custom-pdp-4d__tab-panel rte" id="shipping-{{ section.id }}">{{ section.settings.shipping_content }}</div>{% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.querySelector('.custom-pdp-4d--{{ section.id }}');
+    if (!root || root.dataset.tabsReady === 'true') return;
+    root.dataset.tabsReady = 'true';
+    root.querySelectorAll('[data-pdp-tab]').forEach((button) => {
+      button.addEventListener('click', () => {
+        root.querySelectorAll('[data-pdp-tab]').forEach((b) => b.classList.remove('is-active'));
+        root.querySelectorAll('.custom-pdp-4d__tab-panel').forEach((p) => p.classList.remove('is-active'));
+        button.classList.add('is-active');
+        const panel = root.querySelector('#' + button.dataset.pdpTab);
+        if (panel) panel.classList.add('is-active');
+      });
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .custom-pdp-4d { padding-block: var(--pdp-padding-top) var(--pdp-padding-bottom); }
+  .custom-pdp-4d__inner { width: min(100% - 40px, var(--page-width)); margin-inline: auto; }
+  .custom-pdp-4d__inner--full { width: 100%; max-width: none; padding-inline: 32px; }
+  .custom-pdp-4d__main { display: grid; grid-template-columns: minmax(0, var(--pdp-media-width)) minmax(0, 1fr); gap: var(--pdp-gap); align-items: start; }
+  .custom-pdp-4d__main--media-right .custom-pdp-4d__gallery { order: 2; }
+  .custom-pdp-4d__main--media-right .custom-pdp-4d__details { order: 1; }
+  .custom-pdp-4d__gallery { min-width: 0; }
+  .custom-pdp-4d__gallery .product-media-gallery { --gallery-gap: 12px; }
+  .custom-pdp-4d__gallery img, .custom-pdp-4d__gallery video { border-radius: var(--pdp-radius); }
+  .custom-pdp-4d__details { min-width: 0; padding-block: 16px; }
+  .custom-pdp-4d__eyebrow { color: var(--pdp-accent); text-transform: uppercase; letter-spacing: .16em; font-size: .78rem; font-weight: 600; margin-bottom: 10px; }
+  .custom-pdp-4d__title { margin: 0; font-family: var(--font-heading--family, var(--font-primary--family)); font-size: clamp(2.25rem, 4vw, 4.5rem); line-height: .98; font-weight: 500; color: var(--color-foreground); }
+  .custom-pdp-4d__reviews { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: .88rem; }
+  .custom-pdp-4d__stars { color: var(--pdp-accent); letter-spacing: .12em; }
+  .custom-pdp-4d__price { margin-top: 18px; font-size: 1.7rem; }
+  .custom-pdp-4d__price .price { font-size: inherit; }
+  .custom-pdp-4d__divider { height: 1px; background: color-mix(in srgb, var(--color-foreground) 16%, transparent); margin-block: 18px; }
+  .custom-pdp-4d__short-description { margin-block: 14px 22px; color: color-mix(in srgb, var(--color-foreground) 86%, transparent); line-height: 1.65; }
+  .custom-pdp-4d__info-cards { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--pdp-soft-bg); color: var(--pdp-soft-text); border-radius: var(--pdp-radius); padding: 18px; margin-block: 18px 22px; }
+  .custom-pdp-4d__info-card { text-align: center; padding: 4px 14px; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .custom-pdp-4d__info-card + .custom-pdp-4d__info-card { border-inline-start: 1px solid color-mix(in srgb, var(--pdp-soft-text) 15%, transparent); }
+  .custom-pdp-4d__info-card strong { font-size: .88rem; }
+  .custom-pdp-4d__info-card > span:last-child { font-size: .78rem; opacity: .8; }
+  .custom-pdp-4d__icon, .custom-pdp-4d__accordion-icon, .custom-pdp-4d__delivery-icon, .custom-pdp-4d__benefit-icon { color: var(--pdp-accent); display: inline-flex; }
+  .custom-pdp-4d svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .custom-pdp-4d__variant-picker { margin-top: 18px; }
+  .custom-pdp-4d__buy-buttons { margin-top: 14px; }
+  .custom-pdp-4d__buy-buttons .product-form-buttons:not(.product-form-buttons--stacked) { align-items: stretch; }
+  .custom-pdp-4d__buy-buttons .add-to-cart-button { background: var(--pdp-button-bg); color: var(--pdp-button-text); border-color: var(--pdp-button-bg); }
+  .custom-pdp-4d__buy-buttons--hide-dynamic accelerated-checkout { display: none !important; }
+  .custom-pdp-4d__delivery { display: flex; align-items: center; gap: 10px; margin-block: 16px 20px; font-size: .88rem; }
+  .custom-pdp-4d__accordions { border: 1px solid color-mix(in srgb, var(--color-foreground) 15%, transparent); border-radius: var(--pdp-radius); overflow: hidden; }
+  .custom-pdp-4d__accordion + .custom-pdp-4d__accordion { border-top: 1px solid color-mix(in srgb, var(--color-foreground) 15%, transparent); }
+  .custom-pdp-4d__accordion summary { list-style: none; display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
+  .custom-pdp-4d__accordion summary::-webkit-details-marker { display: none; }
+  .custom-pdp-4d__chevron { transition: transform .2s ease; }
+  .custom-pdp-4d__accordion[open] .custom-pdp-4d__chevron { transform: rotate(180deg); }
+  .custom-pdp-4d__accordion-content { padding: 0 16px 16px 56px; opacity: .82; }
+  .custom-pdp-4d__benefits { margin-top: 32px; padding: 22px 24px; border-radius: var(--pdp-radius); display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .custom-pdp-4d__benefit { display: flex; align-items: center; gap: 12px; }
+  .custom-pdp-4d__benefit-icon { width: 52px; height: 52px; border-radius: 50%; background: color-mix(in srgb, var(--pdp-accent) 12%, transparent); align-items: center; justify-content: center; flex: none; }
+  .custom-pdp-4d__benefit div { display: flex; flex-direction: column; gap: 2px; }
+  .custom-pdp-4d__benefit span:last-child { font-size: .8rem; opacity: .8; }
+  .custom-pdp-4d__tabs { margin-top: 28px; padding: 24px; border-radius: var(--pdp-radius); }
+  .custom-pdp-4d__tab-nav { display: flex; gap: 34px; border-bottom: 1px solid color-mix(in srgb, var(--color-foreground) 14%, transparent); }
+  .custom-pdp-4d__tab-nav button { appearance: none; background: none; border: 0; color: inherit; padding: 0 0 12px; cursor: pointer; font: inherit; position: relative; }
+  .custom-pdp-4d__tab-nav button.is-active::after { content: ''; height: 2px; background: var(--pdp-accent); position: absolute; left: 0; right: 0; bottom: -1px; }
+  .custom-pdp-4d__tab-panels { padding-top: 20px; max-width: 900px; }
+  .custom-pdp-4d__tab-panel { display: none; }
+  .custom-pdp-4d__tab-panel.is-active { display: block; }
+
+  @media screen and (max-width: 989px) {
+    .custom-pdp-4d__inner, .custom-pdp-4d__inner--full { width: 100%; padding-inline: 16px; }
+    .custom-pdp-4d__main { grid-template-columns: 1fr; }
+    .custom-pdp-4d__main--media-right .custom-pdp-4d__gallery, .custom-pdp-4d__main--media-right .custom-pdp-4d__details { order: initial; }
+    .custom-pdp-4d__title { font-size: clamp(2.25rem, 10vw, 3.5rem); }
+    .custom-pdp-4d__info-cards { grid-template-columns: 1fr; gap: 12px; }
+    .custom-pdp-4d__info-card { flex-direction: row; text-align: left; justify-content: flex-start; }
+    .custom-pdp-4d__info-card + .custom-pdp-4d__info-card { border-inline-start: 0; border-top: 1px solid color-mix(in srgb, var(--pdp-soft-text) 15%, transparent); padding-top: 12px; }
+    .custom-pdp-4d__benefits { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media screen and (max-width: 549px) {
+    .custom-pdp-4d__benefits { grid-template-columns: 1fr; }
+    .custom-pdp-4d__tab-nav { gap: 18px; overflow-x: auto; white-space: nowrap; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "PDP premium Flowers 4D",
+  "blocks": [
+    { "type": "@app" }
+  ],
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "header", "content": "Diseño general" },
+    { "type": "select", "id": "content_width", "label": "Ancho", "options": [{"value":"page","label":"Página"},{"value":"full","label":"Completo"}], "default": "page" },
+    { "type": "select", "id": "media_position", "label": "Posición de galería", "options": [{"value":"left","label":"Izquierda"},{"value":"right","label":"Derecha"}], "default": "left" },
+    { "type": "range", "id": "media_width", "label": "Ancho galería desktop", "min": 40, "max": 65, "step": 1, "unit": "%", "default": 54 },
+    { "type": "range", "id": "gap", "label": "Separación entre columnas", "min": 12, "max": 80, "step": 2, "unit": "px", "default": 48 },
+    { "type": "range", "id": "corner_radius", "label": "Radio de bordes", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 16 },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Esquema de color", "default": "scheme-1" },
+    { "type": "color", "id": "accent_color", "label": "Color de acento", "default": "#B88CA0" },
+    { "type": "color", "id": "button_background", "label": "Fondo botón agregar", "default": "#2F4A3F" },
+    { "type": "color", "id": "button_text_color", "label": "Texto botón agregar", "default": "#FFFFFF" },
+    { "type": "color", "id": "border_color", "label": "Color de bordes", "default": "#E8D8D8" },
+    { "type": "color", "id": "soft_background", "label": "Fondo tarjetas suaves", "default": "#F7EFEA" },
+    { "type": "color", "id": "soft_text_color", "label": "Texto tarjetas suaves", "default": "#2F4A3F" },
+
+    { "type": "header", "content": "Contenido principal" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "DETALLES QUE CONECTAN" },
+    { "type": "checkbox", "id": "show_reviews_placeholder", "label": "Mostrar línea de reseñas de muestra", "default": false, "info": "Desactívala si usarás una app de reseñas." },
+    { "type": "text", "id": "reviews_text", "label": "Texto reseñas", "default": "4.9/5" },
+    { "type": "checkbox", "id": "show_divider", "label": "Mostrar divisor", "default": true },
+    { "type": "checkbox", "id": "show_short_description", "label": "Mostrar descripción corta", "default": true },
+    { "type": "richtext", "id": "short_description", "label": "Descripción corta personalizada", "info": "Si queda vacía se usa el inicio de la descripción del producto." },
+    { "type": "range", "id": "description_words", "label": "Palabras descripción automática", "min": 15, "max": 80, "step": 5, "default": 35 },
+    { "type": "checkbox", "id": "show_info_cards", "label": "Mostrar datos destacados", "default": true },
+    { "type": "header", "content": "Datos destacados" },
+    { "type": "checkbox", "id": "info_1_show", "label": "Mostrar dato 1", "default": true },
+    { "type": "select", "id": "info_1_icon", "label": "Ícono dato 1", "options": [{"value":"people","label":"Personas"},{"value":"ruler","label":"Medida"},{"value":"leaf","label":"Ingredientes"},{"value":"gift","label":"Regalo"},{"value":"shield","label":"Calidad"}], "default": "people" },
+    { "type": "text", "id": "info_1_heading", "label": "Título dato 1", "default": "12 a 15 personas" },
+    { "type": "text", "id": "info_1_text", "label": "Texto dato 1", "default": "Porciones sugeridas" },
+    { "type": "checkbox", "id": "info_2_show", "label": "Mostrar dato 2", "default": true },
+    { "type": "select", "id": "info_2_icon", "label": "Ícono dato 2", "options": [{"value":"people","label":"Personas"},{"value":"ruler","label":"Medida"},{"value":"leaf","label":"Ingredientes"},{"value":"gift","label":"Regalo"},{"value":"shield","label":"Calidad"}], "default": "ruler" },
+    { "type": "text", "id": "info_2_heading", "label": "Título dato 2", "default": "70×23 cm" },
+    { "type": "text", "id": "info_2_text", "label": "Texto dato 2", "default": "Medidas aprox." },
+    { "type": "checkbox", "id": "info_3_show", "label": "Mostrar dato 3", "default": true },
+    { "type": "select", "id": "info_3_icon", "label": "Ícono dato 3", "options": [{"value":"people","label":"Personas"},{"value":"ruler","label":"Medida"},{"value":"leaf","label":"Ingredientes"},{"value":"gift","label":"Regalo"},{"value":"shield","label":"Calidad"}], "default": "leaf" },
+    { "type": "text", "id": "info_3_heading", "label": "Título dato 3", "default": "Ingredientes" },
+    { "type": "text", "id": "info_3_text", "label": "Texto dato 3", "default": "Frescos y seleccionados" },
+
+    { "type": "header", "content": "Filas desplegables" },
+    { "type": "checkbox", "id": "accordion_1_show", "label": "Mostrar fila 1", "default": true },
+    { "type": "select", "id": "accordion_1_icon", "label": "Ícono fila 1", "options": [{"value":"leaf","label":"Hoja"},{"value":"heart","label":"Corazón"},{"value":"truck","label":"Camión"},{"value":"shield","label":"Escudo"}], "default": "leaf" },
+    { "type": "text", "id": "accordion_1_heading", "label": "Título fila 1", "default": "Ingredientes frescos y de la mejor calidad" },
+    { "type": "richtext", "id": "accordion_1_content", "label": "Contenido fila 1" },
+    { "type": "checkbox", "id": "accordion_1_open", "label": "Abrir fila 1 inicialmente", "default": false },
+    { "type": "checkbox", "id": "accordion_2_show", "label": "Mostrar fila 2", "default": true },
+    { "type": "select", "id": "accordion_2_icon", "label": "Ícono fila 2", "options": [{"value":"leaf","label":"Hoja"},{"value":"heart","label":"Corazón"},{"value":"truck","label":"Camión"},{"value":"shield","label":"Escudo"}], "default": "heart" },
+    { "type": "text", "id": "accordion_2_heading", "label": "Título fila 2", "default": "Productos artesanales y hechos con amor" },
+    { "type": "richtext", "id": "accordion_2_content", "label": "Contenido fila 2" },
+    { "type": "checkbox", "id": "accordion_2_open", "label": "Abrir fila 2 inicialmente", "default": false },
+    { "type": "checkbox", "id": "accordion_3_show", "label": "Mostrar fila 3", "default": true },
+    { "type": "select", "id": "accordion_3_icon", "label": "Ícono fila 3", "options": [{"value":"leaf","label":"Hoja"},{"value":"heart","label":"Corazón"},{"value":"truck","label":"Camión"},{"value":"shield","label":"Escudo"}], "default": "truck" },
+    { "type": "text", "id": "accordion_3_heading", "label": "Título fila 3", "default": "Envíos a todo Santiago y regiones" },
+    { "type": "richtext", "id": "accordion_3_content", "label": "Contenido fila 3" },
+    { "type": "checkbox", "id": "accordion_3_open", "label": "Abrir fila 3 inicialmente", "default": false },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Mostrar checkout acelerado", "default": false },
+    { "type": "text", "id": "delivery_text", "label": "Mensaje de entrega", "default": "Compra hoy y coordinamos tu entrega" },
+
+    { "type": "header", "content": "Franja de beneficios" },
+    { "type": "checkbox", "id": "show_benefits_strip", "label": "Mostrar franja", "default": true },
+    { "type": "color_scheme", "id": "benefits_color_scheme", "label": "Esquema franja", "default": "scheme-2" },
+    { "type": "checkbox", "id": "benefit_1_show", "label": "Mostrar beneficio 1", "default": true },
+    { "type": "select", "id": "benefit_1_icon", "label": "Ícono beneficio 1", "options": [{"value":"truck","label":"Camión"},{"value":"calendar","label":"Calendario"},{"value":"hand","label":"Hecho con amor"},{"value":"shield","label":"Escudo"}], "default": "truck" },
+    { "type": "text", "id": "benefit_1_heading", "label": "Título beneficio 1", "default": "Envíos en Santiago" },
+    { "type": "text", "id": "benefit_1_text", "label": "Texto beneficio 1", "default": "Rápidos y seguros" },
+    { "type": "checkbox", "id": "benefit_2_show", "label": "Mostrar beneficio 2", "default": true },
+    { "type": "select", "id": "benefit_2_icon", "label": "Ícono beneficio 2", "options": [{"value":"truck","label":"Camión"},{"value":"calendar","label":"Calendario"},{"value":"hand","label":"Hecho con amor"},{"value":"shield","label":"Escudo"}], "default": "calendar" },
+    { "type": "text", "id": "benefit_2_heading", "label": "Título beneficio 2", "default": "Entrega el mismo día" },
+    { "type": "text", "id": "benefit_2_text", "label": "Texto beneficio 2", "default": "Pedidos según horario" },
+    { "type": "checkbox", "id": "benefit_3_show", "label": "Mostrar beneficio 3", "default": true },
+    { "type": "select", "id": "benefit_3_icon", "label": "Ícono beneficio 3", "options": [{"value":"truck","label":"Camión"},{"value":"calendar","label":"Calendario"},{"value":"hand","label":"Hecho con amor"},{"value":"shield","label":"Escudo"}], "default": "hand" },
+    { "type": "text", "id": "benefit_3_heading", "label": "Título beneficio 3", "default": "Hecho con amor" },
+    { "type": "text", "id": "benefit_3_text", "label": "Texto beneficio 3", "default": "Cada detalle cuenta" },
+    { "type": "checkbox", "id": "benefit_4_show", "label": "Mostrar beneficio 4", "default": true },
+    { "type": "select", "id": "benefit_4_icon", "label": "Ícono beneficio 4", "options": [{"value":"truck","label":"Camión"},{"value":"calendar","label":"Calendario"},{"value":"hand","label":"Hecho con amor"},{"value":"shield","label":"Escudo"}], "default": "shield" },
+    { "type": "text", "id": "benefit_4_heading", "label": "Título beneficio 4", "default": "Calidad garantizada" },
+    { "type": "text", "id": "benefit_4_text", "label": "Texto beneficio 4", "default": "Productos frescos" },
+
+    { "type": "header", "content": "Tabs inferiores" },
+    { "type": "checkbox", "id": "show_tabs", "label": "Mostrar tabs", "default": true },
+    { "type": "color_scheme", "id": "tabs_color_scheme", "label": "Esquema tabs", "default": "scheme-1" },
+    { "type": "text", "id": "description_label", "label": "Etiqueta descripción", "default": "Descripción" },
+    { "type": "text", "id": "includes_label", "label": "Etiqueta incluye", "default": "Incluye" },
+    { "type": "richtext", "id": "includes_content", "label": "Contenido incluye" },
+    { "type": "text", "id": "shipping_label", "label": "Etiqueta envíos", "default": "Envío y devoluciones" },
+    { "type": "richtext", "id": "shipping_content", "label": "Contenido envíos" },
+
+    { "type": "header", "content": "Relleno" },
+    { "type": "range", "id": "padding_block_start", "label": "Arriba", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_block_end", "label": "Abajo", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "presets": [
+    {
+      "name": "PDP premium Flowers 4D",
+      "category": "Producto"
+    }
+  ]
+}
+{% endschema %}
