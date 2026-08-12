@@ -311,6 +311,19 @@
       "visible_if": "{{ block.settings.type_preset != 'rte' }}"
     },
     {
+      "type": "checkbox",
+      "id": "use_custom_color",
+      "label": "Usar color personalizado",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_color",
+      "label": "Color personalizado",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.use_custom_color }}"
+    },
+    {
       "type": "header",
       "content": "t:content.appearance"
     },

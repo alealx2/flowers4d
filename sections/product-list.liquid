@@ -96,7 +96,10 @@
     }
   ],
   "disabled_on": {
-    "groups": ["header", "footer"]
+    "groups": [
+      "header",
+      "footer"
+    ]
   },
   "settings": [
     {
@@ -183,6 +186,55 @@
       ],
       "default": "60cqw",
       "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Imágenes de tarjetas de producto"
+    },
+    {
+      "type": "select",
+      "id": "product_card_image_ratio",
+      "label": "Formato de imagen",
+      "options": [
+        {
+          "value": "card",
+          "label": "Usar ajuste de la tarjeta"
+        },
+        {
+          "value": "square",
+          "label": "Cuadrada (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Vertical (4:5)"
+        },
+        {
+          "value": "landscape",
+          "label": "Apaisada (16:9)"
+        },
+        {
+          "value": "adapt",
+          "label": "Adaptar a la imagen original"
+        }
+      ],
+      "default": "square",
+      "info": "Usa un formato uniforme para evitar saltos de altura entre productos."
+    },
+    {
+      "type": "select",
+      "id": "product_card_media_fit",
+      "label": "Ajuste dentro del formato",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Recortar para llenar"
+        },
+        {
+          "value": "contain",
+          "label": "Mostrar imagen completa"
+        }
+      ],
+      "default": "cover"
     },
     {
       "type": "range",
@@ -433,7 +485,10 @@
               }
             }
           },
-          "block_order": ["product_list_text", "product_list_button"]
+          "block_order": [
+            "product_list_text",
+            "product_list_button"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -515,7 +570,11 @@
               }
             }
           },
-          "block_order": ["product-card-gallery", "product_title", "price"]
+          "block_order": [
+            "product-card-gallery",
+            "product_title",
+            "price"
+          ]
         }
       },
       "block_order": []
@@ -610,7 +669,10 @@
               }
             }
           },
-          "block_order": ["product_list_text", "product_list_button"]
+          "block_order": [
+            "product_list_text",
+            "product_list_button"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -692,7 +754,11 @@
               }
             }
           },
-          "block_order": ["product-card-gallery", "product_title", "price"]
+          "block_order": [
+            "product-card-gallery",
+            "product_title",
+            "price"
+          ]
         }
       },
       "block_order": []
@@ -792,7 +858,10 @@
               }
             }
           },
-          "block_order": ["product_list_text", "product_list_button"]
+          "block_order": [
+            "product_list_text",
+            "product_list_button"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -874,7 +943,11 @@
               }
             }
           },
-          "block_order": ["product-card-gallery", "product_title", "price"]
+          "block_order": [
+            "product-card-gallery",
+            "product_title",
+            "price"
+          ]
         }
       },
       "block_order": []

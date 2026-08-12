@@ -1,0 +1,587 @@
+{% liquid
+  assign columns_desktop = section.settings.columns_desktop | default: 2
+  assign columns_mobile = section.settings.columns_mobile | default: 1
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+
+<section
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} spacing-style promo-cards-4d{% if section.settings.mobile_full_width %} section--mobile-full-width{% endif %}"
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    --promo-cards-gap: {{ section.settings.gap }}px;
+    --promo-cards-columns: {{ columns_desktop }};
+    --promo-cards-columns-mobile: {{ columns_mobile }};
+    --promo-card-min-height: {{ section.settings.card_min_height }}px;
+    --promo-card-min-height-mobile: {{ section.settings.card_min_height_mobile }}px;
+    --promo-card-radius: {{ section.settings.card_radius }}px;
+    --promo-card-content-padding: {{ section.settings.card_content_padding }}px;
+  "
+  data-testid="promo-cards-4d"
+>
+  <div class="promo-cards-4d__grid">
+    {% for block in section.blocks %}
+      {% liquid
+        assign has_custom_button_bg = false
+        assign has_custom_button_text = false
+        assign has_custom_text = false
+        assign has_custom_background = false
+
+        if block.settings.button_background != blank
+          assign has_custom_button_bg = true
+        endif
+        if block.settings.button_text_color != blank
+          assign has_custom_button_text = true
+        endif
+        if block.settings.text_color != blank
+          assign has_custom_text = true
+        endif
+        if block.settings.background_color != blank
+          assign has_custom_background = true
+        endif
+      %}
+
+      <article
+        class="promo-card-4d promo-card-4d--h-{{ block.settings.horizontal_alignment }} promo-card-4d--v-{{ block.settings.vertical_alignment }} promo-card-4d--text-{{ block.settings.text_alignment }}"
+        style="
+          {% if has_custom_background %}--promo-card-background: {{ block.settings.background_color }};{% endif %}
+          {% if has_custom_text %}--promo-card-text: {{ block.settings.text_color }};{% endif %}
+          --promo-card-overlay-color: {{ block.settings.overlay_color }};
+          --promo-card-overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+          --promo-card-image-width: {{ block.settings.image_width }}px;
+        "
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.background_image != blank %}
+          <div class="promo-card-4d__background" aria-hidden="true">
+            {{ block.settings.background_image
+              | image_url: width: 2400
+              | image_tag:
+                loading: 'lazy',
+                widths: '600, 900, 1200, 1600, 2000, 2400',
+                sizes: '(min-width: 750px) 50vw, 100vw',
+                class: 'promo-card-4d__background-image'
+            }}
+          </div>
+        {% endif %}
+
+        {% if block.settings.background_image != blank and block.settings.overlay_opacity > 0 %}
+          <div class="promo-card-4d__overlay" aria-hidden="true"></div>
+        {% endif %}
+
+        <div class="promo-card-4d__content">
+          {% if block.settings.image != blank %}
+            <div class="promo-card-4d__image-wrap">
+              {{ block.settings.image
+                | image_url: width: 800
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '120, 180, 240, 360, 480, 640, 800',
+                  sizes: '240px',
+                  class: 'promo-card-4d__image'
+              }}
+            </div>
+          {% endif %}
+
+          {% if block.settings.eyebrow != blank %}
+            <div class="promo-card-4d__eyebrow">{{ block.settings.eyebrow | escape }}</div>
+          {% endif %}
+
+          {% if block.settings.heading != blank %}
+            <h2 class="promo-card-4d__heading {{ block.settings.heading_preset }}">{{ block.settings.heading }}</h2>
+          {% endif %}
+
+          {% if block.settings.text != blank %}
+            <div class="promo-card-4d__text rte">{{ block.settings.text }}</div>
+          {% endif %}
+
+          {% if block.settings.button_label != blank %}
+            <a
+              {% if block.settings.button_link != blank %}
+                href="{{ block.settings.button_link }}"
+              {% else %}
+                role="link"
+                aria-disabled="true"
+              {% endif %}
+              class="promo-card-4d__button {% if block.settings.button_style == 'secondary' %}button-secondary{% else %}button{% endif %}"
+              style="
+                {% if has_custom_button_bg %}--button-background-color: {{ block.settings.button_background }}; --button-border-color: {{ block.settings.button_background }};{% endif %}
+                {% if has_custom_button_text %}--button-color: {{ block.settings.button_text_color }};{% endif %}
+              "
+              {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+            >
+              {{ block.settings.button_label | escape }}
+              {% if block.settings.show_button_arrow %}
+                <span class="promo-card-4d__button-arrow" aria-hidden="true">→</span>
+              {% endif %}
+            </a>
+          {% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .promo-cards-4d__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--promo-cards-columns), minmax(0, 1fr));
+    gap: var(--promo-cards-gap);
+    width: 100%;
+  }
+
+  .promo-card-4d {
+    --promo-card-background: transparent;
+    --promo-card-text: var(--color-foreground);
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: var(--promo-card-min-height);
+    border-radius: var(--promo-card-radius);
+    background: var(--promo-card-background);
+    color: var(--promo-card-text);
+    display: flex;
+  }
+
+  .promo-card-4d__background,
+  .promo-card-4d__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+
+  .promo-card-4d__background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .promo-card-4d__overlay {
+    z-index: -1;
+    background: var(--promo-card-overlay-color);
+    opacity: var(--promo-card-overlay-opacity);
+    pointer-events: none;
+  }
+
+  .promo-card-4d__content {
+    width: min(100%, 720px);
+    padding: var(--promo-card-content-padding);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    justify-content: center;
+  }
+
+  .promo-card-4d--h-left { justify-content: flex-start; }
+  .promo-card-4d--h-center { justify-content: center; }
+  .promo-card-4d--h-right { justify-content: flex-end; }
+
+  .promo-card-4d--v-top .promo-card-4d__content { justify-content: flex-start; }
+  .promo-card-4d--v-center .promo-card-4d__content { justify-content: center; }
+  .promo-card-4d--v-bottom .promo-card-4d__content { justify-content: flex-end; }
+
+  .promo-card-4d--text-left { text-align: left; }
+  .promo-card-4d--text-center { text-align: center; }
+  .promo-card-4d--text-right { text-align: right; }
+
+  .promo-card-4d--text-center .promo-card-4d__image-wrap,
+  .promo-card-4d--text-center .promo-card-4d__button { margin-inline: auto; }
+
+  .promo-card-4d--text-right .promo-card-4d__image-wrap,
+  .promo-card-4d--text-right .promo-card-4d__button { margin-inline-start: auto; }
+
+  .promo-card-4d__image-wrap {
+    width: min(var(--promo-card-image-width), 100%);
+  }
+
+  .promo-card-4d__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .promo-card-4d__eyebrow {
+    font-size: 0.8em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .promo-card-4d__heading,
+  .promo-card-4d__text,
+  .promo-card-4d__eyebrow {
+    color: inherit;
+    margin: 0;
+  }
+
+  .promo-card-4d__text > *:first-child { margin-block-start: 0; }
+  .promo-card-4d__text > *:last-child { margin-block-end: 0; }
+
+  .promo-card-4d__button {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .promo-card-4d__button-arrow {
+    line-height: 1;
+    font-size: 1.15em;
+  }
+
+  @media screen and (max-width: 749px) {
+    .promo-cards-4d__grid {
+      grid-template-columns: repeat(var(--promo-cards-columns-mobile), minmax(0, 1fr));
+    }
+
+    .promo-card-4d {
+      min-height: var(--promo-card-min-height-mobile);
+    }
+
+    .promo-card-4d__content {
+      padding: min(var(--promo-card-content-padding), 28px);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tarjetas promocionales 4D",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Ancho de sección",
+      "options": [
+        { "value": "page-width", "label": "Ancho de página" },
+        { "value": "full-width", "label": "Ancho completo" }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Ancho completo en móvil",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columnas en escritorio",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columnas en móvil",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espacio entre tarjetas",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "card_min_height",
+      "label": "Altura mínima de tarjeta",
+      "min": 280,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 560
+    },
+    {
+      "type": "range",
+      "id": "card_min_height_mobile",
+      "label": "Altura mínima en móvil",
+      "min": 260,
+      "max": 760,
+      "step": 10,
+      "unit": "px",
+      "default": 460
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Radio de esquinas",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "card_content_padding",
+      "label": "Relleno interno de tarjetas",
+      "min": 16,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Relleno de sección"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Superior",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Inferior",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Tarjeta",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Fondo"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Imagen de fondo"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Color de fondo personalizado"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Color de superposición",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Opacidad de superposición",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "%",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Contenido"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen / logo"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "label": "Ancho de imagen / logo",
+          "min": 60,
+          "max": 420,
+          "step": 10,
+          "unit": "px",
+          "default": 140
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Antetítulo"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Título",
+          "default": "Flowers 4D"
+        },
+        {
+          "type": "select",
+          "id": "heading_preset",
+          "label": "Tamaño del título",
+          "options": [
+            { "value": "h1", "label": "H1" },
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "h4", "label": "H4" }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Ramos que hablan por ti. Flores frescas, seleccionadas con amor y dedicación.</p>"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Color de texto personalizado"
+        },
+        {
+          "type": "select",
+          "id": "horizontal_alignment",
+          "label": "Alineación horizontal del contenido",
+          "options": [
+            { "value": "left", "label": "Izquierda" },
+            { "value": "center", "label": "Centro" },
+            { "value": "right", "label": "Derecha" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment",
+          "label": "Alineación vertical del contenido",
+          "options": [
+            { "value": "top", "label": "Arriba" },
+            { "value": "center", "label": "Centro" },
+            { "value": "bottom", "label": "Abajo" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Alineación del texto",
+          "options": [
+            { "value": "left", "label": "Izquierda" },
+            { "value": "center", "label": "Centro" },
+            { "value": "right", "label": "Derecha" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "header",
+          "content": "Botón"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Texto del botón",
+          "default": "Ver colección"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Enlace del botón"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Estilo del botón",
+          "options": [
+            { "value": "primary", "label": "Primario" },
+            { "value": "secondary", "label": "Secundario" }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "color",
+          "id": "button_background",
+          "label": "Color de fondo personalizado"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Color de texto personalizado"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_button_arrow",
+          "label": "Mostrar flecha",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "open_in_new_tab",
+          "label": "Abrir en una nueva pestaña",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Tarjetas Flowers / Tablas 4D",
+      "category": "Contenido",
+      "settings": {
+        "section_width": "full-width",
+        "columns_desktop": 2,
+        "columns_mobile": "1",
+        "gap": 0,
+        "card_min_height": 560,
+        "card_min_height_mobile": 460,
+        "card_radius": 0,
+        "card_content_padding": 48,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      },
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "heading": "Flowers 4D",
+            "text": "<p>Ramos que hablan por ti. Flores frescas, seleccionadas con amor y dedicación.</p>",
+            "button_label": "Ver colección"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "heading": "Tablas 4D",
+            "text": "<p>Tablas de picoteo y eventos diseñadas para compartir momentos únicos.</p>",
+            "button_label": "Ver colección"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

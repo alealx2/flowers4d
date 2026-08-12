@@ -1,0 +1,211 @@
+{% liquid
+  assign use_button_1_bg = block.settings.use_button_1_bg
+  assign use_button_1_text = block.settings.use_button_1_text
+  assign use_button_2_bg = block.settings.use_button_2_bg
+  assign use_button_2_text = block.settings.use_button_2_text
+%}
+
+<div
+  class="dual-buttons dual-buttons--{{ block.id }}"
+  style="
+    --dual-buttons-gap: {{ block.settings.gap }}px;
+    {% if use_button_1_bg %}--button-1-bg: {{ block.settings.button_1_bg }};{% endif %}
+    {% if use_button_1_text %}--button-1-text: {{ block.settings.button_1_text }};{% endif %}
+    {% if use_button_2_bg %}--button-2-bg: {{ block.settings.button_2_bg }};{% endif %}
+    {% if use_button_2_text %}--button-2-text: {{ block.settings.button_2_text }};{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.button_1_label != blank %}
+    <a
+      {% if block.settings.button_1_link == blank %}
+        role="link"
+        aria-disabled="true"
+      {% else %}
+        href="{{ block.settings.button_1_link }}"
+      {% endif %}
+      class="button dual-buttons__button dual-buttons__button--1"
+      {% if block.settings.button_1_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+    >
+      {{ block.settings.button_1_label }}
+    </a>
+  {% endif %}
+
+  {% if block.settings.button_2_label != blank %}
+    <a
+      {% if block.settings.button_2_link == blank %}
+        role="link"
+        aria-disabled="true"
+      {% else %}
+        href="{{ block.settings.button_2_link }}"
+      {% endif %}
+      class="button dual-buttons__button dual-buttons__button--2"
+      {% if block.settings.button_2_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+    >
+      {{ block.settings.button_2_label }}
+    </a>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .dual-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--dual-buttons-gap, 12px);
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .dual-buttons__button {
+    width: auto;
+    min-width: max-content;
+  }
+
+  .dual-buttons__button--1 {
+    background: var(--button-1-bg, var(--color-primary));
+    color: var(--button-1-text, var(--color-primary-button-text));
+    border-color: var(--button-1-bg, var(--color-primary));
+  }
+
+  .dual-buttons__button--2 {
+    background: var(--button-2-bg, var(--color-primary));
+    color: var(--button-2-text, var(--color-primary-button-text));
+    border-color: var(--button-2-bg, var(--color-primary));
+  }
+
+  .dual-buttons__button--1:hover,
+  .dual-buttons__button--2:hover {
+    filter: brightness(0.94);
+  }
+
+  @media screen and (max-width: 749px) {
+    .dual-buttons {
+      gap: min(var(--dual-buttons-gap, 12px), 10px);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Dos botones",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Botón 1"
+    },
+    {
+      "type": "text",
+      "id": "button_1_label",
+      "label": "Texto",
+      "default": "Ver Flowers 4D"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Enlace"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_1_new_tab",
+      "label": "Abrir en una pestaña nueva",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "use_button_1_bg",
+      "label": "Usar color de fondo personalizado",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "button_1_bg",
+      "label": "Color de fondo",
+      "default": "#2F4A3F",
+      "visible_if": "{{ block.settings.use_button_1_bg }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_button_1_text",
+      "label": "Usar color de texto personalizado",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "button_1_text",
+      "label": "Color del texto",
+      "default": "#FFFFFF",
+      "visible_if": "{{ block.settings.use_button_1_text }}"
+    },
+    {
+      "type": "header",
+      "content": "Botón 2"
+    },
+    {
+      "type": "text",
+      "id": "button_2_label",
+      "label": "Texto",
+      "default": "Ver Tablas 4D"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Enlace"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_2_new_tab",
+      "label": "Abrir en una pestaña nueva",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "use_button_2_bg",
+      "label": "Usar color de fondo personalizado",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "button_2_bg",
+      "label": "Color de fondo",
+      "default": "#B88CA0",
+      "visible_if": "{{ block.settings.use_button_2_bg }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_button_2_text",
+      "label": "Usar color de texto personalizado",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "button_2_text",
+      "label": "Color del texto",
+      "default": "#FFFFFF",
+      "visible_if": "{{ block.settings.use_button_2_text }}"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Separación entre botones",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dos botones",
+      "category": "Basic",
+      "settings": {
+        "button_1_link": "shopify://collections/flowers-4d",
+        "button_2_link": "shopify://collections/tablas-4d"
+      }
+    }
+  ]
+}
+{% endschema %}

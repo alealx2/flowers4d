@@ -80,7 +80,9 @@
 {
   "name": "t:names.collection_container",
   "enabled_on": {
-    "templates": ["collection"]
+    "templates": [
+      "collection"
+    ]
   },
   "settings": [
     {
@@ -139,6 +141,55 @@
         }
       ],
       "default": "small"
+    },
+    {
+      "type": "header",
+      "content": "Imágenes de tarjetas de producto"
+    },
+    {
+      "type": "select",
+      "id": "product_card_image_ratio",
+      "label": "Formato de imagen",
+      "options": [
+        {
+          "value": "card",
+          "label": "Usar ajuste de la tarjeta"
+        },
+        {
+          "value": "square",
+          "label": "Cuadrada (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Vertical (4:5)"
+        },
+        {
+          "value": "landscape",
+          "label": "Apaisada (16:9)"
+        },
+        {
+          "value": "adapt",
+          "label": "Adaptar a la imagen original"
+        }
+      ],
+      "default": "square",
+      "info": "Usa un formato uniforme para evitar saltos de altura entre productos."
+    },
+    {
+      "type": "select",
+      "id": "product_card_media_fit",
+      "label": "Ajuste dentro del formato",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Recortar para llenar"
+        },
+        {
+          "value": "contain",
+          "label": "Mostrar imagen completa"
+        }
+      ],
+      "default": "cover"
     },
     {
       "type": "checkbox",
