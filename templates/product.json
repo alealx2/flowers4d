@@ -183,7 +183,7 @@
         "benefit_4_icon": "shield",
         "benefit_4_heading": "Calidad garantizada",
         "benefit_4_text": "Productos frescos",
-        "show_tabs": true,
+        "show_tabs": false,
         "tabs_color_scheme": "scheme-1",
         "description_label": "Descripción",
         "includes_label": "Incluye",
