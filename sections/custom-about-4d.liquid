@@ -1,0 +1,198 @@
+{% liquid
+  assign section_width_class = 'section--page-width'
+  if section.settings.section_width == 'full-width'
+    assign section_width_class = 'section--full-width'
+  endif
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section
+  class="about4d section {{ section_width_class }}{% if section.settings.mobile_full_width %} section--mobile-full-width{% endif %} color-{{ section.settings.color_scheme }}"
+  style="
+    --about4d-accent: {{ section.settings.accent_color }};
+    --about4d-line: {{ section.settings.line_art_color }};
+    --about4d-soft: {{ section.settings.soft_background }};
+    --about4d-radius: {{ section.settings.corner_radius }}px;
+    --about4d-gap: {{ section.settings.gap }}px;
+    --about4d-pad-top: {{ section.settings.padding_block_start }}px;
+    --about4d-pad-bottom: {{ section.settings.padding_block_end }}px;
+  "
+>
+  <div class="about4d__inner">
+    <div class="about4d__hero color-{{ section.settings.hero_color_scheme }}">
+      {% if section.settings.show_decorations %}
+        <svg class="about4d__botanical about4d__botanical--left" viewBox="0 0 220 420" aria-hidden="true"><path d="M20 400C45 310 50 205 125 95M52 305c-20-35-16-67 10-91 23 38 18 68-10 91ZM82 245c20-35 47-49 81-41-19 37-47 51-81 41ZM112 164c-8-35 2-64 31-84 10 36-1 65-31 84ZM127 101c-20-26-18-53 5-75 24 28 20 55-5 75ZM49 337c26-21 55-23 82-4-29 24-57 25-82 4Z"/></svg>
+        <svg class="about4d__botanical about4d__botanical--right" viewBox="0 0 220 420" aria-hidden="true"><path d="M200 400C175 310 170 205 95 95M168 305c20-35 16-67-10-91-23 38-18 68 10 91ZM138 245c-20-35-47-49-81-41 19 37 47 51 81 41ZM108 164c8-35-2-64-31-84-10 36 1 65 31 84ZM93 101c20-26 18-53-5-75-24 28-20 55 5 75ZM171 337c-26-21-55-23-82-4 29 24 57 25 82 4Z"/></svg>
+      {% endif %}
+
+      <div class="about4d__hero-copy">
+        {% if section.settings.hero_eyebrow != blank %}<p class="about4d__eyebrow">{{ section.settings.hero_eyebrow }}</p>{% endif %}
+        <h1 class="about4d__hero-title">
+          {% if section.settings.hero_heading_before != blank %}<span>{{ section.settings.hero_heading_before }}</span>{% endif %}
+          {% if section.settings.hero_heading_accent != blank %}<em>{{ section.settings.hero_heading_accent }}</em>{% endif %}
+          {% if section.settings.hero_heading_after != blank %}<span>{{ section.settings.hero_heading_after }}</span>{% endif %}
+        </h1>
+        {% if section.settings.hero_text != blank %}<div class="about4d__hero-text rte">{{ section.settings.hero_text }}</div>{% endif %}
+      </div>
+
+      <div class="about4d__hero-media">
+        {% if section.settings.hero_image != blank %}
+          {{ section.settings.hero_image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '480,720,960,1200,1400', sizes: '(min-width: 990px) 50vw, 100vw', class: 'about4d__hero-image' }}
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'about4d__placeholder' }}
+        {% endif %}
+      </div>
+    </div>
+
+    {% if section.settings.show_story %}
+      <div class="about4d__story color-{{ section.settings.story_color_scheme }}">
+        <div class="about4d__story-media">
+          {% if section.settings.story_image != blank %}
+            {{ section.settings.story_image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,600,800,1000', sizes: '(min-width: 990px) 34vw, 100vw', class: 'about4d__story-image' }}
+          {% else %}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'about4d__placeholder' }}
+          {% endif %}
+        </div>
+        <div class="about4d__story-heading">
+          {% if section.settings.story_eyebrow != blank %}<p class="about4d__eyebrow">{{ section.settings.story_eyebrow }}</p>{% endif %}
+          {% if section.settings.story_heading != blank %}<h2>{{ section.settings.story_heading }}</h2>{% endif %}
+        </div>
+        <div class="about4d__story-copy">
+          {% if section.settings.story_text != blank %}<div class="rte">{{ section.settings.story_text }}</div>{% endif %}
+          {% if section.settings.story_button_label != blank %}
+            <a class="button about4d__button" href="{{ section.settings.story_button_link | default: '#' }}">{{ section.settings.story_button_label }}</a>
+          {% endif %}
+        </div>
+
+        <div class="about4d__story-values">
+          {% for block in section.blocks %}
+            {% if block.type == 'story_value' %}
+              <div class="about4d__story-value" {{ block.shopify_attributes }}>
+                <span class="about4d__round-icon">{% render 'about4d-icon', icon: block.settings.icon %}</span>
+                <div><strong>{{ block.settings.heading }}</strong>{% if block.settings.text != blank %}<span>{{ block.settings.text }}</span>{% endif %}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_process %}
+      <div class="about4d__process">
+        <div class="about4d__section-heading">
+          {% if section.settings.process_eyebrow != blank %}<p class="about4d__eyebrow">{{ section.settings.process_eyebrow }}</p>{% endif %}
+          {% if section.settings.process_heading != blank %}<h2>{{ section.settings.process_heading }}</h2>{% endif %}
+          <span class="about4d__ornament">✿</span>
+        </div>
+        <div class="about4d__process-grid">
+          {% for block in section.blocks %}
+            {% if block.type == 'process' %}
+              <div class="about4d__process-item" {{ block.shopify_attributes }}>
+                <span class="about4d__process-icon">{% render 'about4d-icon', icon: block.settings.icon %}</span>
+                <h3>{{ block.settings.heading }}</h3>
+                {% if block.settings.text != blank %}<p>{{ block.settings.text }}</p>{% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_benefits %}
+      <div class="about4d__benefits color-{{ section.settings.benefits_color_scheme }}">
+        {% for block in section.blocks %}
+          {% if block.type == 'benefit' %}
+            <div class="about4d__benefit" {{ block.shopify_attributes }}>
+              <span class="about4d__round-icon">{% render 'about4d-icon', icon: block.settings.icon %}</span>
+              <div><strong>{{ block.settings.heading }}</strong>{% if block.settings.text != blank %}<span>{{ block.settings.text }}</span>{% endif %}</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+.about4d { padding-block: var(--about4d-pad-top) var(--about4d-pad-bottom); }
+.about4d__inner { display:grid; gap:var(--about4d-gap); }
+.about4d__hero { min-height:560px; display:grid; grid-template-columns:minmax(0, .9fr) minmax(0, 1.1fr); align-items:center; overflow:hidden; position:relative; border-radius:var(--about4d-radius); }
+.about4d__hero-copy { padding:clamp(36px,6vw,88px); z-index:2; max-width:680px; }
+.about4d__eyebrow { margin:0 0 18px; color:var(--about4d-accent); font-weight:700; font-size:13px; letter-spacing:.09em; text-transform:uppercase; }
+.about4d__hero-title { margin:0 0 28px; font-family:var(--font-heading--family); font-weight:var(--font-heading--weight); font-size:clamp(42px,5.3vw,76px); line-height:1.02; color:var(--color-foreground); }
+.about4d__hero-title span,.about4d__hero-title em { display:block; font-style:normal; }
+.about4d__hero-title em { color:var(--about4d-accent); }
+.about4d__hero-text { font-size:clamp(16px,1.4vw,19px); line-height:1.7; max-width:540px; }
+.about4d__hero-media { align-self:stretch; min-height:560px; position:relative; }
+.about4d__hero-image,.about4d__placeholder { width:100%; height:100%; object-fit:cover; display:block; }
+.about4d__botanical { position:absolute; width:210px; fill:none; stroke:var(--about4d-line); stroke-width:1.4; opacity:.55; z-index:1; pointer-events:none; }
+.about4d__botanical--left { left:-40px; bottom:-60px; }.about4d__botanical--right { right:-30px; top:50px; }
+.about4d__story { display:grid; grid-template-columns:minmax(260px,.9fr) .6fr 1fr; gap:clamp(24px,4vw,56px); align-items:center; padding:clamp(24px,4vw,48px); border-radius:var(--about4d-radius); background:var(--about4d-soft); }
+.about4d__story-media { height:100%; min-height:360px; }.about4d__story-image,.about4d__story-media .about4d__placeholder { width:100%; height:100%; object-fit:cover; border-radius:calc(var(--about4d-radius) * .7); display:block; }
+.about4d__story-heading h2,.about4d__section-heading h2 { margin:0; font-family:var(--font-heading--family); font-size:clamp(34px,4vw,54px); line-height:1.08; }
+.about4d__story-copy { font-size:16px; line-height:1.7; }.about4d__story-copy .button { margin-top:20px; }
+.about4d__button { background:var(--about4d-accent); color:#fff; border-color:var(--about4d-accent); }
+.about4d__story-values { grid-column:2 / -1; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; border-top:1px solid color-mix(in srgb, currentColor 14%, transparent); padding-top:24px; }
+.about4d__story-value,.about4d__benefit { display:flex; align-items:center; gap:14px; }.about4d__story-value strong,.about4d__benefit strong { display:block; font-size:14px; }.about4d__story-value span:not(.about4d__round-icon),.about4d__benefit span:not(.about4d__round-icon){ display:block; font-size:13px; opacity:.75; margin-top:3px; }
+.about4d__round-icon { flex:0 0 52px; width:52px; height:52px; border-radius:50%; background:color-mix(in srgb, var(--about4d-accent) 12%, transparent); color:var(--about4d-accent); display:grid; place-items:center; }.about4d__round-icon svg,.about4d__process-icon svg { width:26px; height:26px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.about4d__process { padding:clamp(28px,4vw,58px) 0; position:relative; }.about4d__section-heading { text-align:center; max-width:900px; margin:0 auto 44px; }.about4d__ornament { display:block; color:var(--about4d-accent); margin-top:14px; }
+.about4d__process-grid { display:grid; grid-template-columns:repeat(4,1fr); }.about4d__process-item { text-align:center; padding:0 clamp(18px,2.4vw,36px); border-right:1px solid color-mix(in srgb, currentColor 12%, transparent); }.about4d__process-item:last-child{border-right:0}.about4d__process-icon { width:56px;height:56px; display:grid;place-items:center; margin:0 auto 14px; color:var(--about4d-accent); }.about4d__process-item h3{margin:0 0 10px;font-size:18px}.about4d__process-item p{margin:0;line-height:1.6;opacity:.8}
+.about4d__benefits { display:grid; grid-template-columns:repeat(4,1fr); gap:0; padding:22px clamp(18px,3vw,38px); border-radius:var(--about4d-radius); background:var(--about4d-soft); }.about4d__benefit { padding:8px 24px; border-right:1px solid color-mix(in srgb,currentColor 12%,transparent); }.about4d__benefit:last-child{border-right:0}
+@media (max-width:989px){.about4d__hero{grid-template-columns:1fr;}.about4d__hero-media{min-height:420px;order:-1}.about4d__hero-copy{padding:34px 24px}.about4d__story{grid-template-columns:1fr 1fr}.about4d__story-media{grid-row:span 2}.about4d__story-values{grid-column:1/-1}.about4d__process-grid,.about4d__benefits{grid-template-columns:repeat(2,1fr)}.about4d__process-item:nth-child(2){border-right:0}.about4d__process-item{margin-bottom:32px}.about4d__benefit:nth-child(2){border-right:0}}
+@media (max-width:749px){.about4d{padding-inline:0}.about4d__hero,.about4d__story,.about4d__benefits{border-radius:0}.about4d__hero-media{min-height:340px}.about4d__hero-title{font-size:44px}.about4d__story{grid-template-columns:1fr;padding:28px 20px}.about4d__story-media{min-height:320px}.about4d__story-values{grid-template-columns:1fr}.about4d__process-grid,.about4d__benefits{grid-template-columns:1fr}.about4d__process-item,.about4d__benefit{border-right:0;border-bottom:1px solid color-mix(in srgb,currentColor 12%,transparent);padding:20px}.about4d__process-item:last-child,.about4d__benefit:last-child{border-bottom:0}.about4d__botanical{width:140px;opacity:.35}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Sobre nosotros 4D",
+  "class": "section-wrapper page-width-normal",
+  "settings": [
+    {"type":"header","content":"Diseño general"},
+    {"type":"select","id":"section_width","label":"Ancho","options":[{"value":"page-width","label":"Página"},{"value":"full-width","label":"Completo"}],"default":"full-width"},
+    {"type":"checkbox","id":"mobile_full_width","label":"Ancho completo en móvil","default":true},
+    {"type":"color_scheme","id":"color_scheme","label":"Esquema general","default":"scheme-1"},
+    {"type":"color","id":"accent_color","label":"Color de acento","default":"#B88CA0"},
+    {"type":"color","id":"line_art_color","label":"Color decoración floral","default":"#B88CA0"},
+    {"type":"color","id":"soft_background","label":"Fondo suave de tarjetas","default":"#F7EEEC"},
+    {"type":"range","id":"corner_radius","label":"Radio de bordes","min":0,"max":40,"step":2,"unit":"px","default":18},
+    {"type":"range","id":"gap","label":"Separación entre bloques","min":0,"max":80,"step":4,"unit":"px","default":28},
+    {"type":"range","id":"padding_block_start","label":"Relleno superior","min":0,"max":120,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"padding_block_end","label":"Relleno inferior","min":0,"max":120,"step":4,"unit":"px","default":48},
+    {"type":"checkbox","id":"show_decorations","label":"Mostrar decoración floral","default":true},
+
+    {"type":"header","content":"Hero"},
+    {"type":"color_scheme","id":"hero_color_scheme","label":"Esquema hero","default":"scheme-1"},
+    {"type":"image_picker","id":"hero_image","label":"Imagen hero"},
+    {"type":"text","id":"hero_eyebrow","label":"Antetítulo","default":"SOBRE NOSOTROS"},
+    {"type":"text","id":"hero_heading_before","label":"Título - primera línea","default":"Creamos detalles que"},
+    {"type":"text","id":"hero_heading_accent","label":"Título - palabra destacada","default":"conectan"},
+    {"type":"text","id":"hero_heading_after","label":"Título - última línea","default":"momentos que compartes."},
+    {"type":"richtext","id":"hero_text","label":"Texto","default":"<p>En Flores y Tablas 4D transformamos flores y sabores en experiencias únicas. Cada creación está hecha con dedicación, calidad y amor, para acompañar los momentos más importantes de tu vida.</p>"},
+
+    {"type":"header","content":"Nuestra historia"},
+    {"type":"checkbox","id":"show_story","label":"Mostrar historia","default":true},
+    {"type":"color_scheme","id":"story_color_scheme","label":"Esquema historia","default":"scheme-1"},
+    {"type":"image_picker","id":"story_image","label":"Imagen historia"},
+    {"type":"text","id":"story_eyebrow","label":"Antetítulo","default":"NUESTRA HISTORIA"},
+    {"type":"text","id":"story_heading","label":"Título","default":"Pasión que florece desde el primer día"},
+    {"type":"richtext","id":"story_text","label":"Texto","default":"<p>Nacimos con el sueño de ofrecer algo más que flores y tablas: quisimos crear recuerdos.</p><p>Cada diseño que sale de nuestras manos lleva nuestro sello: frescura, elegancia y un profundo respeto por cada detalle.</p><p>Gracias por elegirnos para ser parte de tus historias.</p>"},
+    {"type":"text","id":"story_button_label","label":"Texto botón"},
+    {"type":"url","id":"story_button_link","label":"Enlace botón"},
+
+    {"type":"header","content":"Proceso"},
+    {"type":"checkbox","id":"show_process","label":"Mostrar proceso","default":true},
+    {"type":"text","id":"process_eyebrow","label":"Antetítulo","default":"NUESTRO EQUIPO"},
+    {"type":"text","id":"process_heading","label":"Título","default":"Personas que ponen amor en cada detalle"},
+
+    {"type":"header","content":"Beneficios"},
+    {"type":"checkbox","id":"show_benefits","label":"Mostrar franja de beneficios","default":true},
+    {"type":"color_scheme","id":"benefits_color_scheme","label":"Esquema beneficios","default":"scheme-1"}
+  ],
+  "blocks": [
+    {"type":"story_value","name":"Valor de historia","limit":3,"settings":[{"type":"select","id":"icon","label":"Ícono","options":[{"value":"flower","label":"Flor"},{"value":"shield","label":"Escudo"},{"value":"heart","label":"Corazón"},{"value":"gift","label":"Regalo"}],"default":"flower"},{"type":"text","id":"heading","label":"Título","default":"Hecho a mano"},{"type":"text","id":"text","label":"Texto","default":"con dedicación"}]},
+    {"type":"process","name":"Paso del proceso","limit":4,"settings":[{"type":"select","id":"icon","label":"Ícono","options":[{"value":"flower","label":"Flor"},{"value":"leaf","label":"Hoja"},{"value":"hand","label":"Mano"},{"value":"gift","label":"Regalo"}],"default":"flower"},{"type":"text","id":"heading","label":"Título","default":"Creamos"},{"type":"textarea","id":"text","label":"Texto","default":"Diseñamos cada arreglo con creatividad y dedicación para sorprenderte siempre."}]},
+    {"type":"benefit","name":"Beneficio","limit":4,"settings":[{"type":"select","id":"icon","label":"Ícono","options":[{"value":"truck","label":"Camión"},{"value":"calendar","label":"Calendario"},{"value":"hand","label":"Mano"},{"value":"shield","label":"Escudo"}],"default":"truck"},{"type":"text","id":"heading","label":"Título","default":"Envíos en Santiago"},{"type":"text","id":"text","label":"Texto","default":"Rápidos y seguros"}]}
+  ],
+  "presets": [{"name":"Sobre nosotros 4D","category":"Custom","blocks":[{"type":"story_value","settings":{"icon":"flower","heading":"Hecho a mano","text":"con dedicación"}},{"type":"story_value","settings":{"icon":"shield","heading":"Calidad garantizada","text":"en cada detalle"}},{"type":"story_value","settings":{"icon":"heart","heading":"Para momentos","text":"que importan"}},{"type":"process","settings":{"icon":"flower","heading":"Creamos"}},{"type":"process","settings":{"icon":"leaf","heading":"Seleccionamos"}},{"type":"process","settings":{"icon":"hand","heading":"Preparamos"}},{"type":"process","settings":{"icon":"gift","heading":"Entregamos"}},{"type":"benefit","settings":{"icon":"truck","heading":"Envíos en Santiago","text":"Rápidos y seguros"}},{"type":"benefit","settings":{"icon":"calendar","heading":"Entrega el mismo día","text":"Pedidos antes de las 14:00"}},{"type":"benefit","settings":{"icon":"hand","heading":"Hecho con amor","text":"Cada detalle cuenta"}},{"type":"benefit","settings":{"icon":"shield","heading":"Calidad garantizada","text":"Productos frescos"}}]}]
+}
+{% endschema %}
