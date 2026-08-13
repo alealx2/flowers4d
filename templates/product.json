@@ -78,6 +78,25 @@
           },
           "blocks": {}
         },
+        "gift-message": {
+          "type": "product-custom-property",
+          "static": true,
+          "settings": {
+            "property_heading": "Dedicatoria para la tarjeta",
+            "property_description": "Escribe el mensaje que quieres enviar junto con este producto. Lo usaremos para preparar la tarjeta Flowers 4D.",
+            "property_key": "Dedicatoria",
+            "input_type": "text",
+            "max_length": 220,
+            "required": false,
+            "placeholder": "",
+            "placeholder_textarea": "Ej.: Feliz cumpleaños. Espero que disfrutes este detalle tanto como yo disfruté elegirlo para ti. ❤️",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "buy-buttons": {
           "type": "buy-buttons",
           "static": true,
@@ -191,7 +210,9 @@
         "shipping_label": "Envío y devoluciones",
         "shipping_content": "",
         "padding_block_start": 32,
-        "padding_block_end": 48
+        "padding_block_end": 48,
+        "show_gift_message": true,
+        "gift_message_kicker": "AGREGA UNA DEDICATORIA"
       }
     },
     "product_recommendations_VtmHbm": {
