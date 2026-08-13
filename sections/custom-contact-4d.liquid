@@ -1,0 +1,106 @@
+{% liquid
+  assign section_width_class = 'section--page-width'
+  if section.settings.section_width == 'full-width'
+    assign section_width_class = 'section--full-width'
+  endif
+  assign form_id = 'ContactForm4D-' | append: section.id
+%}
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section class="contact4d section {{ section_width_class }}{% if section.settings.mobile_full_width %} section--mobile-full-width{% endif %} color-{{ section.settings.color_scheme }}" style="--contact4d-accent:{{ section.settings.accent_color }};--contact4d-soft:{{ section.settings.soft_background }};--contact4d-radius:{{ section.settings.corner_radius }}px;--contact4d-pad-top:{{ section.settings.padding_block_start }}px;--contact4d-pad-bottom:{{ section.settings.padding_block_end }}px;">
+  <div class="contact4d__inner">
+    <div class="contact4d__top">
+      {% if section.settings.show_decorations %}
+        <svg class="contact4d__botanical contact4d__botanical--left" viewBox="0 0 180 360" aria-hidden="true"><path d="M10 340C45 260 45 160 110 70M35 260c-22-28-18-58 9-78 20 32 17 60-9 78ZM66 200c22-30 50-41 82-30-23 32-50 42-82 30ZM92 135c-7-30 3-55 28-72 8 31-2 56-28 72ZM112 75c-18-22-16-45 4-64 21 23 18 46-4 64Z"/></svg>
+        <svg class="contact4d__botanical contact4d__botanical--right" viewBox="0 0 180 360" aria-hidden="true"><path d="M170 340C135 260 135 160 70 70M145 260c22-28 18-58-9-78-20 32-17 60 9 78ZM114 200c-22-30-50-41-82-30 23 32 50 42 82 30ZM88 135c7-30-3-55-28-72-8 31 2 56 28 72ZM68 75c18-22 16-45-4-64-21 23-18 46 4 64Z"/></svg>
+      {% endif %}
+      <div class="contact4d__intro">
+        {% if section.settings.eyebrow != blank %}<p class="contact4d__eyebrow">{{ section.settings.eyebrow }}</p>{% endif %}
+        <h1 class="contact4d__title"><span>{{ section.settings.heading_before }}</span>{% if section.settings.heading_accent != blank %}<em>{{ section.settings.heading_accent }}</em>{% endif %}</h1>
+        <span class="contact4d__ornament">✿</span>
+        {% if section.settings.intro_text != blank %}<div class="contact4d__intro-text rte">{{ section.settings.intro_text }}</div>{% endif %}
+        <div class="contact4d__contact-items">
+          {% for block in section.blocks %}
+            {% if block.type == 'contact_item' %}
+              <div class="contact4d__contact-item" {{ block.shopify_attributes }}>
+                <span class="contact4d__icon">{% render 'contact4d-icon', icon: block.settings.icon %}</span>
+                <div><strong>{{ block.settings.heading }}</strong>{% if block.settings.link != blank %}<a href="{{ block.settings.link }}">{{ block.settings.text }}</a>{% else %}<span>{{ block.settings.text }}</span>{% endif %}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="contact4d__form-card color-{{ section.settings.form_color_scheme }}">
+        {% if section.settings.form_heading != blank %}<p class="contact4d__form-heading">{{ section.settings.form_heading }}</p>{% endif %}
+        {% form 'contact', id: form_id, class: 'contact4d__form' %}
+          {% if form.posted_successfully? %}
+            <div class="contact4d__status contact4d__status--success" tabindex="-1" autofocus>{{ section.settings.success_message }}</div>
+          {% elsif form.errors %}
+            <div class="contact4d__status contact4d__status--error" role="alert">{{ form.errors | default_errors }}</div>
+          {% endif %}
+          <div class="contact4d__form-grid">
+            <div class="contact4d__field"><label for="{{ form_id }}-name">{{ section.settings.name_label }}</label><input id="{{ form_id }}-name" type="text" name="contact[name]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ section.settings.name_label }}"></div>
+            <div class="contact4d__field"><label for="{{ form_id }}-email">{{ section.settings.email_label }}</label><input id="{{ form_id }}-email" type="email" name="contact[email]" autocapitalize="off" autocomplete="email" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" placeholder="{{ section.settings.email_label }}" required></div>
+            <div class="contact4d__field contact4d__field--full"><label for="{{ form_id }}-phone">{{ section.settings.phone_label }}</label><input id="{{ form_id }}-phone" type="tel" name="contact[phone]" autocomplete="tel" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" placeholder="{{ section.settings.phone_label }}"></div>
+            <div class="contact4d__field contact4d__field--full"><label for="{{ form_id }}-body">{{ section.settings.message_label }}</label><textarea id="{{ form_id }}-body" rows="7" name="contact[body]" placeholder="{{ section.settings.message_label }}" required>{{ form.body }}</textarea></div>
+          </div>
+          {% if section.settings.show_privacy %}
+            <label class="contact4d__privacy"><input type="checkbox" required><span>{{ section.settings.privacy_text }}</span></label>
+          {% endif %}
+          <button class="button contact4d__submit" type="submit">{{ section.settings.submit_label }} <span aria-hidden="true">→</span></button>
+          {% if section.settings.security_text != blank %}<div class="contact4d__security"><span class="contact4d__security-icon">{% render 'contact4d-icon', icon: 'shield' %}</span>{{ section.settings.security_text }}</div>{% endif %}
+        {% endform %}
+      </div>
+    </div>
+
+    {% if section.settings.show_benefits %}
+      <div class="contact4d__benefits color-{{ section.settings.benefits_color_scheme }}">
+        {% for block in section.blocks %}
+          {% if block.type == 'benefit' %}
+            <div class="contact4d__benefit" {{ block.shopify_attributes }}><span class="contact4d__icon contact4d__icon--large">{% render 'contact4d-icon', icon: block.settings.icon %}</span><div><strong>{{ block.settings.heading }}</strong><span>{{ block.settings.text }}</span></div></div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_map %}
+      <div class="contact4d__map">
+        {% if section.settings.map_image != blank %}
+          {{ section.settings.map_image | image_url: width: 2200 | image_tag: loading: 'lazy', widths: '750,1200,1600,2200', sizes: '100vw', class: 'contact4d__map-image' }}
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'contact4d__map-placeholder' }}
+        {% endif %}
+        <div class="contact4d__map-pin">{% render 'contact4d-icon', icon: 'location' %}</div>
+        <div class="contact4d__map-card color-{{ section.settings.map_card_color_scheme }}">
+          <div class="contact4d__map-title"><span class="contact4d__map-icon">{% render 'contact4d-icon', icon: 'location' %}</span><div><strong>{{ section.settings.map_heading }}</strong><span>{{ section.settings.map_address }}</span></div></div>
+          {% if section.settings.map_note != blank %}<div class="contact4d__map-note">{{ section.settings.map_note }}</div>{% endif %}
+          {% if section.settings.map_link != blank %}<a href="{{ section.settings.map_link }}" class="contact4d__map-link" target="_blank" rel="noopener">{{ section.settings.map_link_label }} →</a>{% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+.contact4d{padding-block:var(--contact4d-pad-top) var(--contact4d-pad-bottom)}.contact4d__inner{display:grid;gap:28px}.contact4d__top{display:grid;grid-template-columns:minmax(0,.85fr) minmax(480px,1.15fr);gap:clamp(34px,6vw,90px);padding:clamp(42px,6vw,86px);position:relative;overflow:hidden}.contact4d__intro,.contact4d__form-card{position:relative;z-index:2}.contact4d__eyebrow,.contact4d__form-heading{margin:0 0 18px;color:var(--contact4d-accent);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.contact4d__title{font-family:var(--font-heading--family);font-size:clamp(44px,5vw,72px);line-height:1.02;margin:0;color:var(--color-foreground)}.contact4d__title span,.contact4d__title em{display:block;font-style:normal}.contact4d__title em{color:var(--contact4d-accent)}.contact4d__ornament{display:block;color:var(--contact4d-accent);font-size:24px;margin:24px 0}.contact4d__intro-text{max-width:560px;font-size:17px;line-height:1.65}.contact4d__contact-items{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px}.contact4d__contact-item{display:flex;gap:10px;align-items:flex-start}.contact4d__contact-item strong{display:block;font-size:13px}.contact4d__contact-item span,.contact4d__contact-item a{display:block;font-size:13px;margin-top:4px;color:inherit;text-decoration:none}.contact4d__icon{flex:0 0 38px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--contact4d-accent) 12%,transparent);color:var(--contact4d-accent)}.contact4d__icon svg,.contact4d__map-icon svg,.contact4d__security-icon svg,.contact4d__map-pin svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.contact4d__form-card{padding:clamp(24px,3vw,40px);border-radius:var(--contact4d-radius);background:var(--contact4d-soft);box-shadow:0 12px 40px rgb(32 25 20 / 5%)}.contact4d__form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.contact4d__field--full{grid-column:1/-1}.contact4d__field label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}.contact4d__field input,.contact4d__field textarea{width:100%;border:1px solid color-mix(in srgb,currentColor 16%,transparent);background:var(--color-background);color:var(--color-foreground);border-radius:10px;padding:16px 18px;font:inherit}.contact4d__field textarea{resize:vertical;min-height:150px}.contact4d__privacy{display:flex;align-items:flex-start;gap:10px;margin:16px 0;font-size:13px}.contact4d__privacy input{accent-color:var(--contact4d-accent);margin-top:3px}.contact4d__submit{background:#2F4A3F;color:#fff;border-color:#2F4A3F;min-width:190px;display:inline-flex;justify-content:space-between;gap:24px}.contact4d__security{display:flex;align-items:center;gap:8px;margin-top:18px;font-size:13px;opacity:.72}.contact4d__security-icon{display:grid;place-items:center;color:#2F4A3F}.contact4d__status{padding:12px 14px;border-radius:8px;margin-bottom:14px}.contact4d__status--success{background:#eef8ef}.contact4d__status--error{background:#fff0f0}.contact4d__botanical{position:absolute;width:180px;fill:none;stroke:var(--contact4d-accent);stroke-width:1.3;opacity:.35}.contact4d__botanical--left{left:-30px;bottom:0}.contact4d__botanical--right{right:-20px;top:90px}.contact4d__benefits{display:grid;grid-template-columns:repeat(4,1fr);background:var(--contact4d-soft);padding:22px clamp(20px,4vw,48px);border-radius:var(--contact4d-radius)}.contact4d__benefit{display:flex;align-items:center;gap:14px;padding:8px 22px;border-right:1px solid color-mix(in srgb,currentColor 12%,transparent)}.contact4d__benefit:last-child{border-right:0}.contact4d__benefit strong,.contact4d__benefit span{display:block}.contact4d__benefit strong{font-size:14px}.contact4d__benefit span{font-size:13px;opacity:.75;margin-top:3px}.contact4d__icon--large{width:52px;height:52px;flex-basis:52px}.contact4d__map{min-height:320px;position:relative;overflow:hidden;border-radius:var(--contact4d-radius)}.contact4d__map-image,.contact4d__map-placeholder{width:100%;height:100%;min-height:320px;object-fit:cover;display:block}.contact4d__map:after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.12);pointer-events:none}.contact4d__map-pin{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);z-index:2;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#2F4A3F;color:#fff}.contact4d__map-card{position:absolute;right:8%;top:50%;transform:translateY(-50%);z-index:2;width:min(360px,80%);padding:24px;border-radius:var(--contact4d-radius);box-shadow:0 10px 30px rgb(0 0 0 / 10%)}.contact4d__map-title{display:flex;gap:12px}.contact4d__map-title strong,.contact4d__map-title span{display:block}.contact4d__map-title span{margin-top:5px;line-height:1.45}.contact4d__map-icon{color:var(--contact4d-accent)}.contact4d__map-note{border-top:1px solid color-mix(in srgb,currentColor 14%,transparent);margin-top:16px;padding-top:16px}.contact4d__map-link{display:inline-block;margin-top:12px;color:var(--contact4d-accent);font-weight:700;text-decoration:none}
+@media(max-width:989px){.contact4d__top{grid-template-columns:1fr;padding:44px 28px}.contact4d__contact-items{grid-template-columns:1fr}.contact4d__benefits{grid-template-columns:repeat(2,1fr)}.contact4d__benefit:nth-child(2){border-right:0}.contact4d__map-card{right:24px}}
+@media(max-width:749px){.contact4d__top,.contact4d__benefits,.contact4d__map{border-radius:0}.contact4d__top{padding:38px 20px}.contact4d__title{font-size:44px}.contact4d__form-grid{grid-template-columns:1fr}.contact4d__benefits{grid-template-columns:1fr}.contact4d__benefit{border-right:0;border-bottom:1px solid color-mix(in srgb,currentColor 12%,transparent);padding:16px 4px}.contact4d__benefit:last-child{border-bottom:0}.contact4d__map{min-height:500px}.contact4d__map-image,.contact4d__map-placeholder{min-height:500px}.contact4d__map-card{left:20px;right:20px;top:auto;bottom:20px;transform:none;width:auto}.contact4d__map-pin{top:34%}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name":"Contacto 4D","class":"section-wrapper page-width-normal",
+  "settings":[
+    {"type":"header","content":"Diseño general"},{"type":"select","id":"section_width","label":"Ancho","options":[{"value":"page-width","label":"Página"},{"value":"full-width","label":"Completo"}],"default":"full-width"},{"type":"checkbox","id":"mobile_full_width","label":"Ancho completo en móvil","default":true},{"type":"color_scheme","id":"color_scheme","label":"Esquema general","default":"scheme-1"},{"type":"color","id":"accent_color","label":"Color de acento","default":"#B88CA0"},{"type":"color","id":"soft_background","label":"Fondo suave","default":"#F7EEEC"},{"type":"range","id":"corner_radius","label":"Radio de bordes","min":0,"max":40,"step":2,"unit":"px","default":18},{"type":"range","id":"padding_block_start","label":"Relleno superior","min":0,"max":120,"step":4,"unit":"px","default":0},{"type":"range","id":"padding_block_end","label":"Relleno inferior","min":0,"max":120,"step":4,"unit":"px","default":28},{"type":"checkbox","id":"show_decorations","label":"Mostrar decoración floral","default":true},
+    {"type":"header","content":"Introducción"},{"type":"text","id":"eyebrow","label":"Antetítulo","default":"ESTAMOS AQUÍ PARA TI"},{"type":"text","id":"heading_before","label":"Título principal","default":"Hablemos y hagamos que cada detalle sea"},{"type":"text","id":"heading_accent","label":"Texto destacado","default":"inolvidable"},{"type":"richtext","id":"intro_text","label":"Texto","default":"<p>¿Tienes dudas, quieres hacer un pedido especial o necesitas asesoría personalizada? Escríbenos y nuestro equipo te responderá lo antes posible.</p>"},
+    {"type":"header","content":"Formulario"},{"type":"color_scheme","id":"form_color_scheme","label":"Esquema formulario","default":"scheme-1"},{"type":"text","id":"form_heading","label":"Título formulario","default":"ENVÍANOS UN MENSAJE"},{"type":"text","id":"name_label","label":"Campo nombre","default":"Nombre"},{"type":"text","id":"email_label","label":"Campo email","default":"Correo electrónico"},{"type":"text","id":"phone_label","label":"Campo teléfono","default":"Teléfono (opcional)"},{"type":"text","id":"message_label","label":"Campo mensaje","default":"Comentario"},{"type":"checkbox","id":"show_privacy","label":"Mostrar aceptación de privacidad","default":true},{"type":"inline_richtext","id":"privacy_text","label":"Texto privacidad","default":"Acepto la política de privacidad y el uso de mis datos para responder mi consulta."},{"type":"text","id":"submit_label","label":"Texto botón","default":"Enviar mensaje"},{"type":"text","id":"security_text","label":"Mensaje seguridad","default":"Tu información está segura con nosotros."},{"type":"text","id":"success_message","label":"Mensaje de éxito","default":"¡Gracias! Hemos recibido tu mensaje y te responderemos pronto."},
+    {"type":"header","content":"Beneficios"},{"type":"checkbox","id":"show_benefits","label":"Mostrar beneficios","default":true},{"type":"color_scheme","id":"benefits_color_scheme","label":"Esquema beneficios","default":"scheme-1"},
+    {"type":"header","content":"Mapa / ubicación"},{"type":"checkbox","id":"show_map","label":"Mostrar ubicación","default":true},{"type":"image_picker","id":"map_image","label":"Imagen del mapa"},{"type":"color_scheme","id":"map_card_color_scheme","label":"Esquema tarjeta ubicación","default":"scheme-1"},{"type":"text","id":"map_heading","label":"Título","default":"Visítanos"},{"type":"textarea","id":"map_address","label":"Dirección","default":"Santiago, Chile"},{"type":"text","id":"map_note","label":"Nota","default":"Consulta disponibilidad y horarios antes de visitarnos."},{"type":"url","id":"map_link","label":"Enlace Google Maps"},{"type":"text","id":"map_link_label","label":"Texto enlace","default":"Ver en Google Maps"}
+  ],
+  "blocks":[
+    {"type":"contact_item","name":"Dato de contacto","limit":3,"settings":[{"type":"select","id":"icon","label":"Ícono","options":[{"value":"whatsapp","label":"WhatsApp"},{"value":"mail","label":"Correo"},{"value":"clock","label":"Horario"},{"value":"location","label":"Ubicación"}],"default":"whatsapp"},{"type":"text","id":"heading","label":"Título","default":"WhatsApp"},{"type":"text","id":"text","label":"Texto","default":"+56 9 1234 5678"},{"type":"url","id":"link","label":"Enlace"}]},
+    {"type":"benefit","name":"Beneficio","limit":4,"settings":[{"type":"select","id":"icon","label":"Ícono","options":[{"value":"truck","label":"Camión"},{"value":"calendar","label":"Calendario"},{"value":"hand","label":"Mano"},{"value":"shield","label":"Escudo"}],"default":"truck"},{"type":"text","id":"heading","label":"Título","default":"Envíos en Santiago"},{"type":"text","id":"text","label":"Texto","default":"Rápidos y seguros"}]}
+  ],
+  "presets":[{"name":"Contacto 4D","category":"Custom","blocks":[{"type":"contact_item","settings":{"icon":"whatsapp","heading":"WhatsApp","text":"+56 9 1234 5678"}},{"type":"contact_item","settings":{"icon":"mail","heading":"Correo","text":"hola@flowers4d.cl"}},{"type":"contact_item","settings":{"icon":"clock","heading":"Horario de atención","text":"Lun a Vie: 9:00 - 18:00"}},{"type":"benefit","settings":{"icon":"truck","heading":"Envíos en Santiago y regiones","text":"Rápidos y seguros"}},{"type":"benefit","settings":{"icon":"calendar","heading":"Entrega el mismo día","text":"Pedidos antes de las 14:00"}},{"type":"benefit","settings":{"icon":"hand","heading":"Hecho con amor","text":"Cada detalle cuenta"}},{"type":"benefit","settings":{"icon":"shield","heading":"Calidad garantizada","text":"Productos frescos"}}]}]
+}
+{% endschema %}
