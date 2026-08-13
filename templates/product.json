@@ -82,11 +82,12 @@
           "type": "product-custom-property",
           "static": true,
           "settings": {
-            "property_heading": "Dedicatoria para la tarjeta",
-            "property_description": "Escribe el mensaje que quieres enviar junto con este producto. Lo usaremos para preparar la tarjeta Flowers 4D.",
-            "property_key": "Dedicatoria",
+            "property_heading": "",
+            "property_description": "",
+            "property_key": "",
             "input_type": "text",
             "max_length": 220,
+            "checkbox_label": "Incluir envoltura para regalo",
             "required": false,
             "placeholder": "",
             "placeholder_textarea": "Ej.: Feliz cumpleaños. Espero que disfrutes este detalle tanto como yo disfruté elegirlo para ti. ❤️",
@@ -154,6 +155,8 @@
         "show_short_description": true,
         "short_description": "",
         "description_words": 35,
+        "show_gift_message": true,
+        "gift_message_kicker": "AGREGA UNA DEDICATORIA",
         "show_info_cards": true,
         "info_1_show": true,
         "info_1_icon": "people",
@@ -165,7 +168,7 @@
         "info_2_text": "{{ product.metafields.custom.composicion.value }}",
         "info_3_show": true,
         "info_3_icon": "leaf",
-        "info_3_heading": "Tiempo prreparación",
+        "info_3_heading": "Tiempo preparación",
         "info_3_text": "{{ product.metafields.custom.tiempo_preparacion.value }}",
         "accordion_1_show": true,
         "accordion_1_icon": "leaf",
@@ -210,9 +213,7 @@
         "shipping_label": "Envío y devoluciones",
         "shipping_content": "",
         "padding_block_start": 32,
-        "padding_block_end": 48,
-        "show_gift_message": true,
-        "gift_message_kicker": "AGREGA UNA DEDICATORIA"
+        "padding_block_end": 48
       }
     },
     "product_recommendations_VtmHbm": {
