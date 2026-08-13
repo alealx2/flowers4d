@@ -1,52 +1,124 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "custom-contact-4d",
-      "settings": {
-        "section_width":"full-width",
-        "mobile_full_width":true,
-        "color_scheme":"scheme-1",
-        "accent_color":"#B88CA0",
-        "soft_background":"#F7EEEC",
-        "corner_radius":18,
-        "padding_block_start":0,
-        "padding_block_end":28,
-        "show_decorations":true,
-        "eyebrow":"ESTAMOS AQUÍ PARA TI",
-        "heading_before":"Hablemos y hagamos que cada detalle sea",
-        "heading_accent":"inolvidable",
-        "intro_text":"<p>¿Tienes dudas, quieres hacer un pedido especial o necesitas asesoría personalizada? Escríbenos y nuestro equipo te responderá lo antes posible.</p>",
-        "form_color_scheme":"scheme-1",
-        "form_heading":"ENVÍANOS UN MENSAJE",
-        "name_label":"Nombre",
-        "email_label":"Correo electrónico",
-        "phone_label":"Teléfono (opcional)",
-        "message_label":"Comentario",
-        "show_privacy":true,
-        "privacy_text":"Acepto la política de privacidad y el uso de mis datos para responder mi consulta.",
-        "submit_label":"Enviar mensaje",
-        "security_text":"Tu información está segura con nosotros.",
-        "success_message":"¡Gracias! Hemos recibido tu mensaje y te responderemos pronto.",
-        "show_benefits":true,
-        "benefits_color_scheme":"scheme-1",
-        "show_map":true,
-        "map_card_color_scheme":"scheme-1",
-        "map_heading":"Visítanos",
-        "map_address":"Santiago, Chile",
-        "map_note":"Consulta disponibilidad y horarios antes de visitarnos.",
-        "map_link_label":"Ver en Google Maps"
-      },
       "blocks": {
-        "c1":{"type":"contact_item","settings":{"icon":"whatsapp","heading":"WhatsApp","text":"+56 9 1234 5678"}},
-        "c2":{"type":"contact_item","settings":{"icon":"mail","heading":"Correo","text":"hola@flowers4d.cl"}},
-        "c3":{"type":"contact_item","settings":{"icon":"clock","heading":"Horario de atención","text":"Lun a Vie: 9:00 - 18:00"}},
-        "b1":{"type":"benefit","settings":{"icon":"truck","heading":"Envíos en Santiago y regiones","text":"Rápidos y seguros"}},
-        "b2":{"type":"benefit","settings":{"icon":"calendar","heading":"Entrega el mismo día","text":"Pedidos antes de las 14:00"}},
-        "b3":{"type":"benefit","settings":{"icon":"hand","heading":"Hecho con amor","text":"Cada detalle cuenta"}},
-        "b4":{"type":"benefit","settings":{"icon":"shield","heading":"Calidad garantizada","text":"Productos frescos"}}
+        "c1": {
+          "type": "contact_item",
+          "settings": {
+            "icon": "whatsapp",
+            "heading": "WhatsApp",
+            "text": "+56 9 1234 5678",
+            "link": ""
+          }
+        },
+        "c2": {
+          "type": "contact_item",
+          "settings": {
+            "icon": "mail",
+            "heading": "Correo",
+            "text": "hola@flowers4d.cl",
+            "link": ""
+          }
+        },
+        "c3": {
+          "type": "contact_item",
+          "settings": {
+            "icon": "clock",
+            "heading": "Horario de atención",
+            "text": "Lun a Vie: 9:00 - 18:00",
+            "link": ""
+          }
+        },
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "heading": "Envíos en Santiago y regiones",
+            "text": "Rápidos y seguros"
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "calendar",
+            "heading": "Entrega el mismo día",
+            "text": "Pedidos antes de las 14:00"
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "hand",
+            "heading": "Hecho con amor",
+            "text": "Cada detalle cuenta"
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "heading": "Calidad garantizada",
+            "text": "Productos frescos"
+          }
+        }
       },
-      "block_order":["c1","c2","c3","b1","b2","b3","b4"]
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "section_width": "full-width",
+        "mobile_full_width": true,
+        "color_scheme": "scheme-1",
+        "accent_color": "#b88ca0",
+        "soft_background": "#f7eeec",
+        "corner_radius": 18,
+        "padding_block_start": 0,
+        "padding_block_end": 28,
+        "show_decorations": true,
+        "eyebrow": "ESTAMOS AQUÍ PARA TI",
+        "heading_before": "Hablemos y hagamos que cada detalle sea",
+        "heading_accent": "inolvidable",
+        "intro_text": "<p>¿Tienes dudas, quieres hacer un pedido especial o necesitas asesoría personalizada? Escríbenos y nuestro equipo te responderá lo antes posible.</p>",
+        "form_color_scheme": "scheme-1",
+        "form_heading": "ENVÍANOS UN MENSAJE",
+        "name_label": "Nombre",
+        "email_label": "Correo electrónico",
+        "phone_label": "Teléfono (opcional)",
+        "message_label": "Comentario",
+        "show_privacy": true,
+        "privacy_text": "Acepto la política de privacidad y el uso de mis datos para responder mi consulta.",
+        "submit_label": "Enviar mensaje",
+        "security_text": "Tu información está segura con nosotros.",
+        "success_message": "¡Gracias! Hemos recibido tu mensaje y te responderemos pronto.",
+        "show_benefits": true,
+        "benefits_color_scheme": "scheme-1",
+        "show_map": false,
+        "map_card_color_scheme": "scheme-1",
+        "map_heading": "Visítanos",
+        "map_address": "Santiago, Chile",
+        "map_note": "Consulta disponibilidad y horarios antes de visitarnos.",
+        "map_link": "",
+        "map_link_label": "Ver en Google Maps"
+      }
     }
   },
-  "order":["main"]
+  "order": [
+    "main"
+  ]
 }

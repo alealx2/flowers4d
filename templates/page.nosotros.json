@@ -1,20 +1,133 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "custom-about-4d",
+      "blocks": {
+        "sv1": {
+          "type": "story_value",
+          "settings": {
+            "icon": "flower",
+            "heading": "Hecho a mano",
+            "text": "con dedicación"
+          }
+        },
+        "sv2": {
+          "type": "story_value",
+          "settings": {
+            "icon": "shield",
+            "heading": "Calidad garantizada",
+            "text": "en cada detalle"
+          }
+        },
+        "sv3": {
+          "type": "story_value",
+          "settings": {
+            "icon": "heart",
+            "heading": "Para momentos",
+            "text": "que importan"
+          }
+        },
+        "p1": {
+          "type": "process",
+          "settings": {
+            "icon": "flower",
+            "heading": "Creamos",
+            "text": "Diseñamos cada arreglo con creatividad y dedicación para sorprenderte siempre."
+          }
+        },
+        "p2": {
+          "type": "process",
+          "settings": {
+            "icon": "leaf",
+            "heading": "Seleccionamos",
+            "text": "Elegimos únicamente flores y productos frescos de la más alta calidad."
+          }
+        },
+        "p3": {
+          "type": "process",
+          "settings": {
+            "icon": "hand",
+            "heading": "Preparamos",
+            "text": "Cada pieza es elaborada a mano con cuidado y pasión por lo que hacemos."
+          }
+        },
+        "p4": {
+          "type": "process",
+          "settings": {
+            "icon": "gift",
+            "heading": "Entregamos",
+            "text": "Llevamos tus emociones a donde más importan, con puntualidad y cariño."
+          }
+        },
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "heading": "Envíos en Santiago",
+            "text": "Rápidos y seguros"
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "calendar",
+            "heading": "Entrega el mismo día",
+            "text": "Pedidos antes de las 14:00"
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "hand",
+            "heading": "Hecho con amor",
+            "text": "Cada detalle cuenta"
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "heading": "Calidad garantizada",
+            "text": "Productos frescos"
+          }
+        }
+      },
+      "block_order": [
+        "sv1",
+        "sv2",
+        "sv3",
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
       "settings": {
         "section_width": "full-width",
         "mobile_full_width": true,
         "color_scheme": "scheme-1",
-        "accent_color": "#B88CA0",
-        "line_art_color": "#B88CA0",
-        "soft_background": "#F7EEEC",
+        "accent_color": "#b88ca0",
+        "line_art_color": "#b88ca0",
+        "soft_background": "#f7eeec",
         "corner_radius": 18,
         "gap": 28,
         "padding_block_start": 0,
         "padding_block_end": 48,
         "show_decorations": true,
         "hero_color_scheme": "scheme-1",
+        "hero_image": "shopify://shop_images/ramo.png",
         "hero_eyebrow": "SOBRE NOSOTROS",
         "hero_heading_before": "Creamos detalles que",
         "hero_heading_accent": "conectan",
@@ -22,30 +135,21 @@
         "hero_text": "<p>En Flores y Tablas 4D transformamos flores y sabores en experiencias únicas. Cada creación está hecha con dedicación, calidad y amor, para acompañar los momentos más importantes de tu vida.</p>",
         "show_story": true,
         "story_color_scheme": "scheme-1",
+        "story_image": "shopify://shop_images/vendedor.png",
         "story_eyebrow": "NUESTRA HISTORIA",
         "story_heading": "Pasión que florece desde el primer día",
         "story_text": "<p>Nacimos con el sueño de ofrecer algo más que flores y tablas: quisimos crear recuerdos.</p><p>Cada diseño que sale de nuestras manos lleva nuestro sello: frescura, elegancia y un profundo respeto por cada detalle.</p><p>Gracias por elegirnos para ser parte de tus historias.</p>",
+        "story_button_label": "",
+        "story_button_link": "",
         "show_process": true,
         "process_eyebrow": "NUESTRO EQUIPO",
         "process_heading": "Personas que ponen amor en cada detalle",
         "show_benefits": true,
         "benefits_color_scheme": "scheme-1"
-      },
-      "blocks": {
-        "sv1":{"type":"story_value","settings":{"icon":"flower","heading":"Hecho a mano","text":"con dedicación"}},
-        "sv2":{"type":"story_value","settings":{"icon":"shield","heading":"Calidad garantizada","text":"en cada detalle"}},
-        "sv3":{"type":"story_value","settings":{"icon":"heart","heading":"Para momentos","text":"que importan"}},
-        "p1":{"type":"process","settings":{"icon":"flower","heading":"Creamos","text":"Diseñamos cada arreglo con creatividad y dedicación para sorprenderte siempre."}},
-        "p2":{"type":"process","settings":{"icon":"leaf","heading":"Seleccionamos","text":"Elegimos únicamente flores y productos frescos de la más alta calidad."}},
-        "p3":{"type":"process","settings":{"icon":"hand","heading":"Preparamos","text":"Cada pieza es elaborada a mano con cuidado y pasión por lo que hacemos."}},
-        "p4":{"type":"process","settings":{"icon":"gift","heading":"Entregamos","text":"Llevamos tus emociones a donde más importan, con puntualidad y cariño."}},
-        "b1":{"type":"benefit","settings":{"icon":"truck","heading":"Envíos en Santiago","text":"Rápidos y seguros"}},
-        "b2":{"type":"benefit","settings":{"icon":"calendar","heading":"Entrega el mismo día","text":"Pedidos antes de las 14:00"}},
-        "b3":{"type":"benefit","settings":{"icon":"hand","heading":"Hecho con amor","text":"Cada detalle cuenta"}},
-        "b4":{"type":"benefit","settings":{"icon":"shield","heading":"Calidad garantizada","text":"Productos frescos"}}
-      },
-      "block_order":["sv1","sv2","sv3","p1","p2","p3","p4","b1","b2","b3","b4"]
+      }
     }
   },
-  "order":["main"]
+  "order": [
+    "main"
+  ]
 }
